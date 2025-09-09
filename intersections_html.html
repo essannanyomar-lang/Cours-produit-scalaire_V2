@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intersections et Tangentes - Cours Interactif</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn.home {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section h1 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-align: center;
+        }
+
+        .canvas-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .canvas-wrapper {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .canvas-wrapper:hover {
+            transform: scale(1.02);
+        }
+
+        canvas {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f8fafc;
+            cursor: crosshair;
+        }
+
+        .controls {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .value-display {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 5px;
+            font-weight: bold;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #e17055;
+            font-size: 1.2em;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .info-panel {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #6c5ce7;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .intersection-types {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .type-indicator {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .no-intersection {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .tangent {
+            background: #feca57;
+            color: #2d3748;
+        }
+
+        .two-intersections {
+            background: #4ecdc4;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .canvas-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Intersections et Tangentes</h1>
+            <p>Analysez les intersections et construisez des tangentes</p>
+        </div>
+
+        <div class="navigation">
+            <a href="index.html" class="nav-btn home">🏠 Accueil</a>
+            <a href="vecteurs.html" class="nav-btn">🔢 Vecteurs</a>
+            <a href="angles.html" class="nav-btn">📐 Angles</a>
+            <a href="droites.html" class="nav-btn">📏 Droites</a>
+            <a href="cercles.html" class="nav-btn">⭕ Cercles</a>
+            <a href="parametrique.html" class="nav-btn">🔄 Paramétrique</a>
+        </div>
+
+        <div class="section">
+            <h1>Intersection Droite-Cercle</h1>
+            
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <h3>Positions Relatives Interactives</h3>
+                    <canvas id="intersectionCanvas" width="500" height="400"></canvas>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>Droite - Pente (m):</label>
+                            <input type="range" id="slope" min="-3" max="3" value="1" step="0.1">
+                            <span class="value-display" id="slopeValue">1.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Droite - Ordonnée à l'origine (b):</label>
+                            <input type="range" id="intercept" min="-5" max="5" value="0" step="0.1">
+                            <span class="value-display" id="interceptValue">0.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Cercle - Centre x:</label>
+                            <input type="range" id="circleX" min="-2" max="2" value="0" step="0.1">
+                            <span class="value-display" id="circleXValue">0.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Cercle - Centre y:</label>
+                            <input type="range" id="circleY" min="-2" max="2" value="0" step="0.1">
+                            <span class="value-display" id="circleYValue">0.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Cercle - Rayon:</label>
+                            <input type="range" id="circleR" min="0.5" max="3" value="2" step="0.1">
+                            <span class="value-display" id="circleRValue">2.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📈 Analyse de l'Intersection</h3>
+                    <div class="formula-box">
+                        <p><strong>Équation droite:</strong> y = <span id="lineEquation">x</span></p>
+                        <p><strong>Équation cercle:</strong> <span id="circleEquation">(x-0)² + (y-0)² = 4</span></p>
+                    </div>
+                    <div class="info-panel">
+                        <p><strong>Distance centre-droite:</strong> d = <span id="centerLineDistance">0.0</span></p>
+                        <p><strong>Rayon du cercle:</strong> R = <span id="radiusDisplay">2.0</span></p>
+                        <p><strong>Discriminant:</strong> Δ = <span id="discriminant">0.0</span></p>
+                    </div>
+                    <div class="intersection-types">
+                        <span class="type-indicator no-intersection">Aucune intersection</span>
+                        <span class="type-indicator tangent">Tangente</span>
+                        <span class="type-indicator two-intersections">Deux intersections</span>
+                    </div>
+                    <div class="formula-box" id="intersectionResult">
+                        <p><strong>Type d'intersection:</strong></p>
+                        <p id="intersectionType">Deux points d'intersection</p>
+                        <p><strong>Points:</strong></p>
+                        <p id="intersectionPoints">A(1.41, 1.41), B(-1.41, -1.41)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h1>Tangentes au Cercle</h1>
+            
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <h3>Construction de Tangentes</h3>
+                    <canvas id="tangentCanvas" width="500" height="400"></canvas>
+                    <div class="info-panel">
+                        <p>Cliquez sur le cercle pour voir la tangente au point cliqué</p>
+                        <p>Ou cliquez à l'extérieur pour voir les tangentes depuis ce point</p>
+                    </div>
+                    <div class="controls">
+                        <button class="btn" onclick="clearTangents()">🗑️ Effacer</button>
+                        <button class="btn" onclick="showAllTangents()">📐 Toutes les Tangentes</button>
+                        <button class="btn" onclick="animateTangent()">🎬 Animation</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📝 Informations Tangente</h3>
+                    <div class="info-panel">
+                        <p><strong>Point sélectionné:</strong> <span id="selectedPoint">Cliquez sur le canvas</span></p>
+                        <p><strong>Type:</strong> <span id="tangentType">-</span></p>
+                    </div>
+                    <div class="formula-box" id="tangentInfo">
+                        <p><strong>Point de tangence:</strong></p>
+                        <p><span id="tangentPoint">-</span></p>
+                        <p><strong>Équation tangente:</strong></p>
+                        <p><span id="tangentEquation">-</span></p>
+                    </div>
+                    <div class="info-panel">
+                        <p><strong>Distance au centre:</strong> <span id="pointDistance">-</span></p>
+                        <p><strong>Propriété:</strong> <span id="tangentProperty">La tangente est perpendiculaire au rayon</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h1>Tangentes d'un Point Extérieur</h1>
+            
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <h3>Point Extérieur et ses Tangentes</h3>
+                    <canvas id="externalTangentCanvas" width="500" height="400"></canvas>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>Point externe - x:</label>
+                            <input type="range" id="externalX" min="-4" max="4" value="3" step="0.1">
+                            <span class="value-display" id="externalXValue">3.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Point externe - y:</label>
+                            <input type="range" id="externalY" min="-4" max="4" value="2" step="0.1">
+                            <span class="value-display" id="externalYValue">2.0</span>
+                        </div>
+                        <button class="btn" onclick="calculateTangentLength()">📏 Longueur Tangente</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🎯 Calculs des Tangentes Externes</h3>
+                    <div class="formula-box">
+                        <p><strong>Point externe:</strong> P(<span id="externalPointCoords">3.0, 2.0</span>)</p>
+                        <p><strong>Centre du cercle:</strong> O(0, 0)</p>
+                        <p><strong>Rayon:</strong> R = 2.0</p>
+                    </div>
+                    <div class="info-panel">
+                        <p><strong>Distance PO:</strong> d = <span id="distancePO">3.61</span></p>
+                        <p><strong>Longueur tangente:</strong> PT = <span id="tangentLength">2.65</span></p>
+                        <p><strong>Formule:</strong> PT = √(d² - R²)</p>
+                    </div>
+                    <div class="formula-box">
+                        <p><strong>Points de tangence:</strong></p>
+                        <p>T₁(<span id="tangentPoint1">1.2, 1.6</span>)</p>
+                        <p>T₂(<span id="tangentPoint2">1.2, -1.6</span>)</p>
+                    </div>
+                    <div class="info-panel">
+                        <p><strong>Angle POT:</strong> α = <span id="anglePOT">48.2</span>°</p>
+                        <p><strong>Angle TPT:</strong> 2α = <span id="angleTPT">96.4</span>°</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h1>Construction Géométrique</h1>
+            
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <h3>Construction Pas à Pas</h3>
+                    <canvas id="constructionCanvas" width="500" height="400"></canvas>
+                    <div class="controls">
+                        <button class="btn" onclick="nextStep()">⏭️ Étape Suivante</button>
+                        <button class="btn" onclick="prevStep()">⏮️ Étape Précédente</button>
+                        <button class="btn" onclick="resetConstruction()">🔄 Recommencer</button>
+                        <div class="info-panel">
+                            <p><strong>Étape <span id="currentStep">1</span>/6:</strong> <span id="stepDescription">Placer le cercle et le point externe</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🔧 Guide de Construction</h3>
+                    <div class="info-panel">
+                        <p><strong>Méthode classique:</strong></p>
+                        <ol>
+                            <li>Tracer le cercle (O, R) et placer le point externe P</li>
+                            <li>Tracer le segment [OP]</li>
+                            <li>Construire le cercle de diamètre [OP]</li>
+                            <li>Les intersections donnent les points de tangence</li>
+                            <li>Tracer les tangentes PT₁ et PT₂</li>
+                            <li>Vérifier la perpendicularité avec les rayons</li>
+                        </ol>
+                    </div>
+                    <div class="formula-box">
+                        <p><strong>Justification théorique:</strong></p>
+                        <p>L'angle inscrit dans un demi-cercle est droit</p>
+                        <p>Donc PTₓO = 90°, ce qui garantit la tangence</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <h3>📚 Concepts clés - Intersections et Tangentes</h3>
+            <p><strong>Intersection droite-cercle :</strong> Selon la distance d du centre à la droite : d > R (aucune), d = R (tangente), d < R (deux points)</p>
+            <p><strong>Tangente en un point :</strong> Droite perpendiculaire au rayon passant par ce point</p>
+            <p><strong>Tangentes d'un point externe :</strong> Un point extérieur admet exactement deux tangentes au cercle</p>
+            <p><strong>Longueur de tangente :</strong> PT = √(PO² - R²) où P est le point externe</p>
+            <p><strong>Propriété fondamentale :</strong> Les tangentes issues d'un point externe ont même longueur</p>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let intersectionCanvas, intersectionCtx;
+        let tangentCanvas, tangentCtx;
+        let externalTangentCanvas, externalTangentCtx;
+        let constructionCanvas, constructionCtx;
+        let tangentPoints = [];
+        let constructionStep = 0;
+        let animationRunning = false;
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            intersectionCanvas = document.getElementById('intersectionCanvas');
+            intersectionCtx = intersectionCanvas.getContext('2d');
+            tangentCanvas = document.getElementById('tangentCanvas');
+            tangentCtx = tangentCanvas.getContext('2d');
+            externalTangentCanvas = document.getElementById('externalTangentCanvas');
+            externalTangentCtx = externalTangentCanvas.getContext('2d');
+            constructionCanvas = document.getElementById('constructionCanvas');
+            constructionCtx = constructionCanvas.getContext('2d');
+            
+            setupEventListeners();
+            updateIntersectionCanvas();
+            updateTangentCanvas();
+            updateExternalTangentCanvas();
+            updateConstructionCanvas();
+        });
+
+        function setupEventListeners() {
+            // Intersection droite-cercle
+            ['slope', 'intercept', 'circleX', 'circleY', 'circleR'].forEach(id => {
+                const slider = document.getElementById(id);
+                if (slider) {
+                    slider.addEventListener('input', function() {
+                        updateSliderDisplay(id, this.value);
+                        updateIntersectionCanvas();
+                    });
+                }
+            });
+
+            // Tangentes externes
+            ['externalX', 'externalY'].forEach(id => {
+                const slider = document.getElementById(id);
+                if (slider) {
+                    slider.addEventListener('input', function() {
+                        updateSliderDisplay(id, this.value);
+                        updateExternalTangentCanvas();
+                    });
+                }
+            });
+
+            // Canvas clicks
+            tangentCanvas.addEventListener('click', handleTangentClick);
+        }
+
+        function updateIntersectionCanvas() {
+            const width = intersectionCanvas.width;
+            const height = intersectionCanvas.height;
+            
+            // Effacer le canvas
+            intersectionCtx.fillStyle = '#f8fafc';
+            intersectionCtx.fillRect(0, 0, width, height);
+            
+            // Dessiner la grille
+            drawGrid(intersectionCtx, width, height);
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 50;
+            
+            // Obtenir les paramètres
+            const slope = parseFloat(document.getElementById('slope').value);
+            const intercept = parseFloat(document.getElementById('intercept').value);
+            const cx = parseFloat(document.getElementById('circleX').value);
+            const cy = parseFloat(document.getElementById('circleY').value);
+            const radius = parseFloat(document.getElementById('circleR').value);
+            
+            // Dessiner le cercle
+            intersectionCtx.strokeStyle = '#4ecdc4';
+            intersectionCtx.fillStyle = 'rgba(78, 205, 196, 0.1)';
+            intersectionCtx.lineWidth = 3;
+            intersectionCtx.beginPath();
+            intersectionCtx.arc(centerX + cx * scale, centerY - cy * scale, radius * scale, 0, 2 * Math.PI);
+            intersectionCtx.fill();
+            intersectionCtx.stroke();
+            
+            // Dessiner le centre
+            drawPoint(intersectionCtx, centerX + cx * scale, centerY - cy * scale, 'O', '#2d3748');
+            
+            // Dessiner la droite y = mx + b
+            drawLine(intersectionCtx, slope, intercept, centerX, centerY, scale, '#ff6b6b');
+            
+            // Calculer et dessiner les intersections
+            const intersections = calculateLineCircleIntersection(slope, intercept, cx, cy, radius);
+            
+            // Dessiner les points d'intersection
+            intersections.forEach((point, index) => {
+                drawPoint(intersectionCtx, 
+                         centerX + point.x * scale, 
+                         centerY - point.y * scale, 
+                         `P${index + 1}`, '#feca57');
+            });
+            
+            // Dessiner la distance du centre à la droite
+            const distance = calculateDistancePointToLine(cx, cy, slope, intercept);
+            const footOfPerpendicular = calculateFootOfPerpendicular(cx, cy, slope, intercept);
+            
+            // Ligne de distance
+            intersectionCtx.setLineDash([5, 5]);
+            intersectionCtx.strokeStyle = '#e17055';
+            intersectionCtx.lineWidth = 2;
+            intersectionCtx.beginPath();
+            intersectionCtx.moveTo(centerX + cx * scale, centerY - cy * scale);
+            intersectionCtx.lineTo(centerX + footOfPerpendicular.x * scale, centerY - footOfPerpendicular.y * scale);
+            intersectionCtx.stroke();
+            intersectionCtx.setLineDash([]);
+            
+            drawPoint(intersectionCtx, 
+                     centerX + footOfPerpendicular.x * scale, 
+                     centerY - footOfPerpendicular.y * scale, 
+                     'H', '#e17055');
+            
+            // Mettre à jour les informations
+            updateIntersectionInfo(slope, intercept, cx, cy, radius, distance, intersections);
+        }
+
+        function updateTangentCanvas() {
+            const width = tangentCanvas.width;
+            const height = tangentCanvas.height;
+            
+            // Effacer le canvas
+            tangentCtx.fillStyle = '#f8fafc';
+            tangentCtx.fillRect(0, 0, width, height);
+            
+            // Dessiner la grille
+            drawGrid(tangentCtx, width, height);
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 50;
+            const radius = 2;
+            
+            // Dessiner le cercle principal
+            tangentCtx.strokeStyle = '#4ecdc4';
+            tangentCtx.lineWidth = 3;
+            tangentCtx.beginPath();
+            tangentCtx.arc(centerX, centerY, radius * scale, 0, 2 * Math.PI);
+            tangentCtx.stroke();
+            
+            // Dessiner le centre
+            drawPoint(tangentCtx, centerX, centerY, 'O', '#2d3748');
+            
+            // Dessiner les tangentes stockées
+            tangentPoints.forEach(tangent => {
+                if (tangent.type === 'point') {
+                    // Tangente en un point
+                    drawTangentAtPoint(tangentCtx, tangent.point, centerX, centerY, radius, scale);
+                } else if (tangent.type === 'external') {
+                    // Tangentes depuis un point externe
+                    drawTangentsFromExternalPoint(tangentCtx, tangent.point, centerX, centerY, radius, scale);
+                }
+            });
+        }
+
+        function updateExternalTangentCanvas() {
+            const width = externalTangentCanvas.width;
+            const height = externalTangentCanvas.height;
+            
+            // Effacer le canvas
+            externalTangentCtx.fillStyle = '#f8fafc';
+            externalTangentCtx.fillRect(0, 0, width, height);
+            
+            // Dessiner la grille
+            drawGrid(externalTangentCtx, width, height);
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 40;
+            const radius = 2;
+            const px = parseFloat(document.getElementById('externalX').value);
+            const py = parseFloat(document.getElementById('externalY').value);
+            
+            // Dessiner le cercle
+            externalTangentCtx.strokeStyle = '#4ecdc4';
+            externalTangentCtx.fillStyle = 'rgba(78, 205, 196, 0.1)';
+            externalTangentCtx.lineWidth = 3;
+            externalTangentCtx.beginPath();
+            externalTangentCtx.arc(centerX, centerY, radius * scale, 0, 2 * Math.PI);
+            externalTangentCtx.fill();
+            externalTangentCtx.stroke();
+            
+            // Dessiner le centre
+            drawPoint(externalTangentCtx, centerX, centerY, 'O', '#2d3748');
+            
+            // Dessiner le point externe
+            drawPoint(externalTangentCtx, centerX + px * scale, centerY - py * scale, 'P', '#ff6b6b');
+            
+            // Calculer et dessiner les tangentes si le point est à l'extérieur
+            const distance = Math.sqrt(px * px + py * py);
+            
+            if (distance > radius) {
+                const tangentData = calculateExternalTangents(px, py, 0, 0, radius);
+                
+                // Dessiner les tangentes
+                tangentData.points.forEach((point, index) => {
+                    // Point de tangence
+                    drawPoint(externalTangentCtx, 
+                             centerX + point.x * scale, 
+                             centerY - point.y * scale, 
+                             `T${index + 1}`, '#feca57');
+                    
+                    // Ligne tangente
+                    externalTangentCtx.strokeStyle = '#e17055';
+                    externalTangentCtx.lineWidth = 2;
+                    externalTangentCtx.beginPath();
+                    externalTangentCtx.moveTo(centerX + px * scale, centerY - py * scale);
+                    externalTangentCtx.lineTo(centerX + point.x * scale, centerY - point.y * scale);
+                    externalTangentCtx.stroke();
+                    
+                    // Rayon au point de tangence
+                    externalTangentCtx.setLineDash([3, 3]);
+                    externalTangentCtx.strokeStyle = '#95a5a6';
+                    externalTangentCtx.lineWidth = 1;
+                    externalTangentCtx.beginPath();
+                    externalTangentCtx.moveTo(centerX, centerY);
+                    externalTangentCtx.lineTo(centerX + point.x * scale, centerY - point.y * scale);
+                    externalTangentCtx.stroke();
+                    externalTangentCtx.setLineDash([]);
+                });
+                
+                // Ligne OP
+                externalTangentCtx.setLineDash([5, 5]);
+                externalTangentCtx.strokeStyle = '#2d3748';
+                externalTangentCtx.lineWidth = 2;
+                externalTangentCtx.beginPath();
+                externalTangentCtx.moveTo(centerX, centerY);
+                externalTangentCtx.lineTo(centerX + px * scale, centerY - py * scale);
+                externalTangentCtx.stroke();
+                externalTangentCtx.setLineDash([]);
+                
+                // Mettre à jour les informations
+                updateExternalTangentInfo(px, py, distance, radius, tangentData);
+            } else {
+                // Point à l'intérieur ou sur le cercle
+                document.getElementById('tangentLength').textContent = 'Point non externe';
+            }
+        }
+
+        function updateConstructionCanvas() {
+            const width = constructionCanvas.width;
+            const height = constructionCanvas.height;
+            
+            // Effacer le canvas
+            constructionCtx.fillStyle = '#f8fafc';
+            constructionCtx.fillRect(0, 0, width, height);
+            
+            // Dessiner la grille
+            drawGrid(constructionCtx, width, height);
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 50;
+            const radius = 1.5;
+            const px = 2.5;
+            const py = 1.5;
+            
+            // Étapes de construction
+            if (constructionStep >= 1) {
+                // Étape 1: Cercle et point externe
+                constructionCtx.strokeStyle = '#4ecdc4';
+                constructionCtx.lineWidth = 3;
+                constructionCtx.beginPath();
+                constructionCtx.arc(centerX, centerY, radius * scale, 0, 2 * Math.PI);
+                constructionCtx.stroke();
+                
+                drawPoint(constructionCtx, centerX, centerY, 'O', '#2d3748');
+                drawPoint(constructionCtx, centerX + px * scale, centerY - py * scale, 'P', '#ff6b6b');
+            }
+            
+            if (constructionStep >= 2) {
+                // Étape 2: Segment OP
+                constructionCtx.strokeStyle = '#2d3748';
+                constructionCtx.lineWidth = 2;
+                constructionCtx.beginPath();
+                constructionCtx.moveTo(centerX, centerY);
+                constructionCtx.lineTo(centerX + px * scale, centerY - py * scale);
+                constructionCtx.stroke();
+            }
+            
+            if (constructionStep >= 3) {
+                // Étape 3: Milieu de OP
+                const mx = px / 2;
+                const my = py / 2;
+                drawPoint(constructionCtx, centerX + mx * scale, centerY - my * scale, 'M', '#e17055');
+            }
+            
+            if (constructionStep >= 4) {
+                // Étape 4: Cercle de diamètre OP
+                const mx = px / 2;
+                const my = py / 2;
+                const diameterRadius = Math.sqrt(px * px + py * py) / 2;
+                
+                constructionCtx.setLineDash([3, 3]);
+                constructionCtx.strokeStyle = '#95a5a6';
+                constructionCtx.lineWidth = 2;
+                constructionCtx.beginPath();
+                constructionCtx.arc(centerX + mx * scale, centerY - my * scale, diameterRadius * scale, 0, 2 * Math.PI);
+                constructionCtx.stroke();
+                constructionCtx.setLineDash([]);
+            }
+            
+            if (constructionStep >= 5) {
+                // Étape 5: Points de tangence
+                const tangentData = calculateExternalTangents(px, py, 0, 0, radius);
+                tangentData.points.forEach((point, index) => {
+                    drawPoint(constructionCtx, 
+                             centerX + point.x * scale, 
+                             centerY - point.y * scale, 
+                             `T${index + 1}`, '#feca57');
+                });
+            }
+            
+            if (constructionStep >= 6) {
+                // Étape 6: Tangentes
+                const tangentData = calculateExternalTangents(px, py, 0, 0, radius);
+                tangentData.points.forEach(point => {
+                    constructionCtx.strokeStyle = '#e17055';
+                    constructionCtx.lineWidth = 3;
+                    constructionCtx.beginPath();
+                    constructionCtx.moveTo(centerX + px * scale, centerY - py * scale);
+                    constructionCtx.lineTo(centerX + point.x * scale, centerY - point.y * scale);
+                    constructionCtx.stroke();
+                });
+            }
+            
+            updateConstructionInfo();
+        }
+
+        function drawGrid(ctx, width, height) {
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 50;
+            
+            // Lignes de grille
+            for (let i = -10; i <= 10; i++) {
+                if (i !== 0) {
+                    // Lignes verticales
+                    ctx.beginPath();
+                    ctx.moveTo(centerX + i * scale, 0);
+                    ctx.lineTo(centerX + i * scale, height);
+                    ctx.stroke();
+                    
+                    // Lignes horizontales
+                    ctx.beginPath();
+                    ctx.moveTo(0, centerY + i * scale);
+                    ctx.lineTo(width, centerY + i * scale);
+                    ctx.stroke();
+                }
+            }
+            
+            // Axes principaux
+            ctx.strokeStyle = '#2d3748';
+            ctx.lineWidth = 2;
+            
+            // Axe X
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(width, centerY);
+            ctx.stroke();
+            
+            // Axe Y
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, height);
+            ctx.stroke();
+        }
+
+        function drawLine(ctx, slope, intercept, centerX, centerY, scale, color) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            
+            const x1 = -10;
+            const y1 = slope * x1 + intercept;
+            const x2 = 10;
+            const y2 = slope * x2 + intercept;
+            
+            ctx.beginPath();
+            ctx.moveTo(centerX + x1 * scale, centerY - y1 * scale);
+            ctx.lineTo(centerX + x2 * scale, centerY - y2 * scale);
+            ctx.stroke();
+        }
+
+        function drawPoint(ctx, x, y, label, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(x, y, 5, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.fillStyle = '#2d3748';
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText(label, x + 8, y - 8);
+        }
+
+        function updateSliderDisplay(id, value) {
+            const display = document.getElementById(id + 'Value');
+            if (display) {
+                display.textContent = parseFloat(value).toFixed(1);
+            }
+        }
+
+        function calculateLineCircleIntersection(slope, intercept, cx, cy, radius) {
+            // Équation droite: y = mx + b
+            // Équation cercle: (x - cx)² + (y - cy)² = r²
+            // Substitution: (x - cx)² + (mx + b - cy)² = r²
+            
+            const a = 1 + slope * slope;
+            const b_coeff = 2 * (slope * (intercept - cy) - cx);
+            const c = cx * cx + Math.pow(intercept - cy, 2) - radius * radius;
+            
+            const discriminant = b_coeff * b_coeff - 4 * a * c;
+            
+            if (discriminant < 0) {
+                return []; // Pas d'intersection
+            } else if (discriminant === 0) {
+                // Une intersection (tangente)
+                const x = -b_coeff / (2 * a);
+                const y = slope * x + intercept;
+                return [{x, y}];
+            } else {
+                // Deux intersections
+                const x1 = (-b_coeff + Math.sqrt(discriminant)) / (2 * a);
+                const y1 = slope * x1 + intercept;
+                const x2 = (-b_coeff - Math.sqrt(discriminant)) / (2 * a);
+                const y2 = slope * x2 + intercept;
+                return [{x: x1, y: y1}, {x: x2, y: y2}];
+            }
+        }
+
+        function calculateDistancePointToLine(px, py, slope, intercept) {
+            // Distance d'un point à une droite y = mx + b
+            // Équivalent à mx - y + b = 0
+            // Distance = |m*px - py + b| / sqrt(m² + 1)
+            return Math.abs(slope * px - py + intercept) / Math.sqrt(slope * slope + 1);
+        }
+
+        function calculateFootOfPerpendicular(px, py, slope, intercept) {
+            // Pied de la perpendiculaire du point (px, py) à la droite y = mx + b
+            const x = (px + slope * (py - intercept)) / (1 + slope * slope);
+            const y = slope * x + intercept;
+            return {x, y};
+        }
+
+        function calculateExternalTangents(px, py, cx, cy, radius) {
+            const distance = Math.sqrt((px - cx) * (px - cx) + (py - cy) * (py - cy));
+            
+            if (distance <= radius) {
+                return {points: [], length: 0, angle: 0};
+            }
+            
+            const tangentLength = Math.sqrt(distance * distance - radius * radius);
+            const angle = Math.asin(radius / distance);
+            
+            // Angle de la ligne centre-point externe
+            const baseAngle = Math.atan2(py - cy, px - cx);
+            
+            // Angles des deux tangentes
+            const angle1 = baseAngle + angle;
+            const angle2 = baseAngle - angle;
+            
+            // Points de tangence
+            const t1x = cx + radius * Math.cos(angle1 + Math.PI / 2);
+            const t1y = cy + radius * Math.sin(angle1 + Math.PI / 2);
+            const t2x = cx + radius * Math.cos(angle2 - Math.PI / 2);
+            const t2y = cy + radius * Math.sin(angle2 - Math.PI / 2);
+            
+            return {
+                points: [{x: t1x, y: t1y}, {x: t2x, y: t2y}],
+                length: tangentLength,
+                angle: angle * 180 / Math.PI
+            };
+        }
+
+        function updateIntersectionInfo(slope, intercept, cx, cy, radius, distance, intersections) {
+            // Équation de la droite
+            let lineEq = slope === 1 ? 'y = x' : slope === -1 ? 'y = -x' : `y = ${slope.toFixed(1)}x`;
+            if (intercept !== 0) {
+                lineEq += intercept > 0 ? ` + ${intercept.toFixed(1)}` : ` - ${Math.abs(intercept).toFixed(1)}`;
+            }
+            document.getElementById('lineEquation').textContent = lineEq;
+            
+            // Équation du cercle
+            let circleEq = '';
+            if (cx !== 0 || cy !== 0) {
+                circleEq = `(x${cx >= 0 ? '-' : '+'}${Math.abs(cx).toFixed(1)})² + (y${cy >= 0 ? '-' : '+'}${Math.abs(cy).toFixed(1)})² = ${(radius * radius).toFixed(1)}`;
+            } else {
+                circleEq = `x² + y² = ${(radius * radius).toFixed(1)}`;
+            }
+            document.getElementById('circleEquation').textContent = circleEq;
+            
+            document.getElementById('centerLineDistance').textContent = distance.toFixed(3);
+            document.getElementById('radiusDisplay').textContent = radius.toFixed(1);
+            
+            // Type d'intersection
+            let type, points;
+            if (intersections.length === 0) {
+                type = 'Aucune intersection';
+                points = 'Pas de points';
+            } else if (intersections.length === 1) {
+                type = 'Droite tangente';
+                points = `T(${intersections[0].x.toFixed(2)}, ${intersections[0].y.toFixed(2)})`;
+            } else {
+                type = 'Deux points d\'intersection';
+                points = `A(${intersections[0].x.toFixed(2)}, ${intersections[0].y.toFixed(2)}), B(${intersections[1].x.toFixed(2)}, ${intersections[1].y.toFixed(2)})`;
+            }
+            
+            document.getElementById('intersectionType').textContent = type;
+            document.getElementById('intersectionPoints').textContent = points;
+            
+            // Calculer discriminant
+            const a = 1 + slope * slope;
+            const b_coeff = 2 * (slope * (intercept - cy) - cx);
+            const c = cx * cx + Math.pow(intercept - cy, 2) - radius * radius;
+            const discriminant = b_coeff * b_coeff - 4 * a * c;
+            document.getElementById('discriminant').textContent = discriminant.toFixed(2);
+        }
+
+        function updateExternalTangentInfo(px, py, distance, radius, tangentData) {
+            document.getElementById('externalPointCoords').textContent = `${px.toFixed(1)}, ${py.toFixed(1)}`;
+            document.getElementById('distancePO').textContent = distance.toFixed(2);
+            document.getElementById('tangentLength').textContent = tangentData.length.toFixed(2);
+            
+            if (tangentData.points.length >= 2) {
+                document.getElementById('tangentPoint1').textContent = `${tangentData.points[0].x.toFixed(2)}, ${tangentData.points[0].y.toFixed(2)}`;
+                document.getElementById('tangentPoint2').textContent = `${tangentData.points[1].x.toFixed(2)}, ${tangentData.points[1].y.toFixed(2)}`;
+            }
+            
+            document.getElementById('anglePOT').textContent = tangentData.angle.toFixed(1);
+            document.getElementById('angleTPT').textContent = (2 * tangentData.angle).toFixed(1);
+        }
+
+        function updateConstructionInfo() {
+            const steps = [
+                'Placer le cercle et le point externe',
+                'Tracer le segment [OP]',
+                'Marquer le milieu M de [OP]',
+                'Construire le cercle de diamètre [OP]',
+                'Marquer les points d\'intersection T₁ et T₂',
+                'Tracer les tangentes PT₁ et PT₂'
+            ];
+            
+            document.getElementById('currentStep').textContent = Math.max(1, constructionStep);
+            document.getElementById('stepDescription').textContent = steps[Math.max(0, constructionStep - 1)] || steps[0];
+        }
+
+        function handleTangentClick(event) {
+            const canvas = event.target;
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 50;
+            const radius = 2;
+            
+            // Convertir en coordonnées mathématiques
+            const mathX = (x - centerX) / scale;
+            const mathY = -(y - centerY) / scale;
+            
+            // Vérifier si on clique près du cercle ou à l'extérieur
+            const distance = Math.sqrt(mathX * mathX + mathY * mathY);
+            
+            if (Math.abs(distance - radius) < 0.3) {
+                // Clic sur le cercle - tangente en ce point
+                const angle = Math.atan2(mathY, mathX);
+                const pointX = radius * Math.cos(angle);
+                const pointY = radius * Math.sin(angle);
+                
+                tangentPoints = [{
+                    type: 'point',
+                    point: {x: pointX, y: pointY}
+                }];
+                
+                document.getElementById('selectedPoint').textContent = `(${mathX.toFixed(2)}, ${mathY.toFixed(2)})`;
+                document.getElementById('tangentType').textContent = 'Tangente en un point du cercle';
+                document.getElementById('tangentPoint').textContent = `(${pointX.toFixed(2)}, ${pointY.toFixed(2)})`;
+                
+                // Équation de la tangente: x₀x + y₀y = r²
+                const equation = `${pointX.toFixed(2)}x + ${pointY.toFixed(2)}y = ${(radius * radius).toFixed(0)}`;
+                document.getElementById('tangentEquation').textContent = equation;
+                
+            } else if (distance > radius) {
+                // Clic à l'extérieur - tangentes depuis ce point
+                tangentPoints = [{
+                    type: 'external',
+                    point: {x: mathX, y: mathY}
+                }];
+                
+                const tangentData = calculateExternalTangents(mathX, mathY, 0, 0, radius);
+                
+                document.getElementById('selectedPoint').textContent = `(${mathX.toFixed(2)}, ${mathY.toFixed(2)})`;
+                document.getElementById('tangentType').textContent = 'Tangentes depuis un point externe';
+                document.getElementById('tangentPoint').textContent = `T₁(${tangentData.points[0].x.toFixed(2)}, ${tangentData.points[0].y.toFixed(2)}), T₂(${tangentData.points[1].x.toFixed(2)}, ${tangentData.points[1].y.toFixed(2)})`;
+                document.getElementById('tangentEquation').textContent = 'Deux tangentes';
+            }
+            
+            document.getElementById('pointDistance').textContent = distance.toFixed(2);
+            updateTangentCanvas();
+        }
+
+        function drawTangentAtPoint(ctx, point, centerX, centerY, radius, scale) {
+            // Dessiner le point de tangence
+            drawPoint(ctx, centerX + point.x * scale, centerY - point.y * scale, 'T', '#feca57');
+            
+            // Vecteur normal (rayon)
+            const normalX = point.x;
+            const normalY = point.y;
+            
+            // Vecteur tangent (perpendiculaire au rayon)
+            const tangentX = -normalY;
+            const tangentY = normalX;
+            
+            // Dessiner la tangente
+            ctx.strokeStyle = '#e17055';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            const t1X = centerX + (point.x - 3 * tangentX) * scale;
+            const t1Y = centerY - (point.y - 3 * tangentY) * scale;
+            const t2X = centerX + (point.x + 3 * tangentX) * scale;
+            const t2Y = centerY - (point.y + 3 * tangentY) * scale;
+            ctx.moveTo(t1X, t1Y);
+            ctx.lineTo(t2X, t2Y);
+            ctx.stroke();
+            
+            // Dessiner le rayon
+            ctx.setLineDash([3, 3]);
+            ctx.strokeStyle = '#95a5a6';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(centerX + point.x * scale, centerY - point.y * scale);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        function drawTangentsFromExternalPoint(ctx, point, centerX, centerY, radius, scale) {
+            // Dessiner le point externe
+            drawPoint(ctx, centerX + point.x * scale, centerY - point.y * scale, 'P', '#ff6b6b');
+            
+            // Calculer les tangentes
+            const tangentData = calculateExternalTangents(point.x, point.y, 0, 0, radius);
+            
+            tangentData.points.forEach((tangentPoint, index) => {
+                // Point de tangence
+                drawPoint(ctx, 
+                         centerX + tangentPoint.x * scale, 
+                         centerY - tangentPoint.y * scale, 
+                         `T${index + 1}`, '#feca57');
+                
+                // Tangente
+                ctx.strokeStyle = '#e17055';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(centerX + point.x * scale, centerY - point.y * scale);
+                ctx.lineTo(centerX + tangentPoint.x * scale, centerY - tangentPoint.y * scale);
+                ctx.stroke();
+                
+                // Rayon
+                ctx.setLineDash([3, 3]);
+                ctx.strokeStyle = '#95a5a6';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(centerX + tangentPoint.x * scale, centerY - tangentPoint.y * scale);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            });
+        }
+
+        function clearTangents() {
+            tangentPoints = [];
+            updateTangentCanvas();
+            document.getElementById('selectedPoint').textContent = 'Cliquez sur le canvas';
+            document.getElementById('tangentType').textContent = '-';
+            document.getElementById('tangentPoint').textContent = '-';
+            document.getElementById('tangentEquation').textContent = '-';
+            document.getElementById('pointDistance').textContent = '-';
+        }
+
+        function showAllTangents() {
+            // Afficher des tangentes à différents points
+            const angles = [0, Math.PI/4, Math.PI/2, 3*Math.PI/4, Math.PI, 5*Math.PI/4, 3*Math.PI/2, 7*Math.PI/4];
+            tangentPoints = angles.map(angle => ({
+                type: 'point',
+                point: {x: 2 * Math.cos(angle), y: 2 * Math.sin(angle)}
+            }));
+            updateTangentCanvas();
+        }
+
+        function animateTangent() {
+            if (animationRunning) return;
+            
+            animationRunning = true;
+            let angle = 0;
+            
+            function animate() {
+                if (!animationRunning) return;
+                
+                tangentPoints = [{
+                    type: 'point',
+                    point: {x: 2 * Math.cos(angle), y: 2 * Math.sin(angle)}
+                }];
+                
+                updateTangentCanvas();
+                
+                angle += 0.1;
+                if (angle > 2 * Math.PI) {
+                    animationRunning = false;
+                    return;
+                }
+                
+                setTimeout(animate, 100);
+            }
+            
+            animate();
+        }
+
+        function calculateTangentLength() {
+            const px = parseFloat(document.getElementById('externalX').value);
+            const py = parseFloat(document.getElementById('externalY').value);
+            const distance = Math.sqrt(px * px + py * py);
+            const radius = 2;
+            
+            if (distance > radius) {
+                const tangentLength = Math.sqrt(distance * distance - radius * radius);
+                alert(`Longueur de la tangente: ${tangentLength.toFixed(3)}\nFormule utilisée: √(d² - R²) = √(${distance.toFixed(2)}² - ${radius}²)`);
+            } else {
+                alert('Le point doit être à l\'extérieur du cercle pour calculer la longueur de tangente.');
+            }
+        }
+
+        function nextStep() {
+            if (constructionStep < 6) {
+                constructionStep++;
+                updateConstructionCanvas();
+            }
+        }
+
+        function prevStep() {
+            if (constructionStep > 0) {
+                constructionStep--;
+                updateConstructionCanvas();
+            }
+        }
+
+        function resetConstruction() {
+            constructionStep = 0;
+            updateConstructionCanvas();
+        }
+    </script>
+</body>
+</html>

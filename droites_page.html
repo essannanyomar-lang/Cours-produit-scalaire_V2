@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Droites dans le Plan - Cours Interactif</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn.home {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section h1 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-align: center;
+        }
+
+        .canvas-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .canvas-wrapper {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .canvas-wrapper:hover {
+            transform: scale(1.02);
+        }
+
+        canvas {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f8fafc;
+            cursor: crosshair;
+        }
+
+        .controls {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .value-display {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 5px;
+            font-weight: bold;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #e17055;
+            font-size: 1.2em;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .info-panel {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #6c5ce7;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .canvas-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📏 Droites dans le Plan</h1>
+            <p>Maîtrisez l'étude analytique des droites et distances</p>
+        </div>
+
+        <div class="navigation">
+            <a href="index.html" class="nav-btn home">🏠 Accueil</a>
+            <a href="vecteurs.html" class="nav-btn">🔢 Vecteurs</a>
+            <a href="angles.html" class="nav-btn">📐 Angles</a>
+            <a href="cercles.html" class="nav-btn">⭕ Cercles</a>
+            <a href="parametrique.html" class="nav-btn">🔄 Paramétrique</a>
+            <a href="intersections.html" class="nav-btn">🎯 Intersections</a>
+        </div>
+
+        <div class="section">
+            <h1>Droite et Vecteur Normal</h1>
+            
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <h3>Équation de Droite Interactive</h3>
+                    <canvas id="lineCanvas" width="500" height="400"></canvas>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>Coefficient a (dans ax + by + c = 0):</label>
+                            <input type="range" id="lineA" min="-5" max="5" value="1" step="0.1">
+                            <span class="value-display" id="lineAValue">1.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Coefficient b:</label>
+                            <input type="range" id="lineB" min="-5" max="5" value="1" step="0.1">
+                            <span class="value-display" id="lineBValue">1.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Coefficient c:</label>
+                            <input type="range" id="lineC" min="-10" max="10" value="0" step="0.1">
+                            <span class="value-display" id="lineCValue">0.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📐 Propriétés de la Droite</h3>
+                    <div class="formula-box">
+                        <p><strong>Équation:</strong> <span id="lineEquation">x + y = 0</span></p>
+                        <p><strong>Vecteur normal:</strong> n⃗(<span id="normalVector">1, 1</span>)</p>
+                        <p><strong>Vecteur directeur:</strong> u⃗(<span id="directionVector">-1, 1</span>)</p>
+                    </div>
+                    <div class="info-panel">
+                        <p><strong>Pente:</strong> <span id="slope">-1.00</span></p>
+                        <p><strong>Ordonnée à l'origine:</strong> <span id="yIntercept">0.00</span></p>
+                        <p><strong>Distance à l'origine:</strong> <span id="distanceOrigin">0.00</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h1>Distance Point-Droite</h1>
+            
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <h3>Calcul de Distance Interactive</h3>
+                    <canvas id="distanceCanvas" width="500" height="400"></canvas>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>Point P - Coordonnée x:</label>
+                            <input type="range" id="pointX" min="-5" max="5" value="2" step="0.1">
+                            <span class="value-display" id="pointXValue">2.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Point P - Coordonnée y:</label>
+                            <input type="range" id="pointY" min="-5" max="5" value="3" step="0.1">
+                            <span class="value-display" id="pointYValue">3.0</span>
+                        </div>
+                        <button class="btn" onclick="addRandomPoint()">🎲 Point Aléatoire</button>
+                        <button class="btn" onclick="clearPoints()">🗑️ Effacer Points</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📊 Calcul de Distance</h3>
+                    <div class="formula-box">
+                        <p><strong>Distance:</strong> d = <span id="distanceValue">3.54</span></p>
+                        <p><strong>Formule:</strong> d = |ax₀ + by₀ + c| / √(a² + b²)</p>
+                    </div>
+                    <div class="info-panel">
+                        <p><strong>Point P:</strong> (<span id="pointCoords">2.0, 3.0</span>)</p>
+                        <p><strong>Projeté H:</strong> (<span id="projectedPoint">0.0, 0.0</span>)</p>
+                        <p><strong>Distance PH:</strong> <span id="projectedDistance">0.0</span></p>
+                    </div>
+                    <div class="formula-box">
+                        <p><strong>Substitution:</strong></p>
+                        <p>d = |<span id="substitution">1×2 + 1×3 + 0</span>| / √<span id="denominator">2</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h1>Droites Perpendiculaires</h1>
+            
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <h3>Test de Perpendicularité</h3>
+                    <canvas id="perpendicularCanvas" width="500" height="400"></canvas>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>Droite 2 - Coefficient a':</label>
+                            <input type="range" id="lineA2" min="-5" max="5" value="-1" step="0.1">
+                            <span class="value-display" id="lineA2Value">-1.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Droite 2 - Coefficient b':</label>
+                            <input type="range" id="lineB2" min="-5" max="5" value="1" step="0.1">
+                            <span class="value-display" id="lineB2Value">1.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Droite 2 - Coefficient c':</label>
+                            <input type="range" id="lineC2" min="-10" max="10" value="1" step="0.1">
+                            <span class="value-display" id="lineC2Value">1.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>⟂ Test de Perpendicularité</h3>
+                    <div class="formula-box">
+                        <p><strong>Droite 1:</strong> <span id="line1Equation">x + y = 0</span></p>
+                        <p><strong>Droite 2:</strong> <span id="line2Equation">-x + y + 1 = 0</span></p>
+                    </div>
+                    <div class="info-panel">
+                        <p><strong>Condition:</strong> aa' + bb' = 0</p>
+                        <p><strong>Calcul:</strong> <span id="perpendicularCalc">1×(-1) + 1×1 = 0</span></p>
+                        <p><strong>Résultat:</strong> <span id="perpendicularResult">Perpendiculaires</span></p>
+                    </div>
+                    <div class="formula-box">
+                        <p><strong>Angle entre les droites:</strong> <span id="angleLines">90.0</span>°</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <h3>📚 Concepts clés - Droites dans le Plan</h3>
+            <p><strong>Équation cartésienne :</strong> Une droite a pour équation ax + by + c = 0 avec (a,b) ≠ (0,0)</p>
+            <p><strong>Vecteur normal :</strong> Le vecteur n⃗(a,b) est normal à la droite ax + by + c = 0</p>
+            <p><strong>Vecteur directeur :</strong> Si n⃗(a,b) est normal, alors u⃗(-b,a) est directeur</p>
+            <p><strong>Distance point-droite :</strong> d(M,D) = |ax₀ + by₀ + c| / √(a² + b²)</p>
+            <p><strong>Perpendicularité :</strong> Deux droites sont perpendiculaires si aa' + bb' = 0</p>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let lineCanvas, lineCtx;
+        let distanceCanvas, distanceCtx;
+        let perpendicularCanvas, perpendicularCtx;
+        let additionalPoints = [];
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            lineCanvas = document.getElementById('lineCanvas');
+            lineCtx = lineCanvas.getContext('2d');
+            distanceCanvas = document.getElementById('distanceCanvas');
+            distanceCtx = distanceCanvas.getContext('2d');
+            perpendicularCanvas = document.getElementById('perpendicularCanvas');
+            perpendicularCtx = perpendicularCanvas.getContext('2d');
+            
+            setupEventListeners();
+            updateLineCanvas();
+            updateDistanceCanvas();
+            updatePerpendicularCanvas();
+        });
+
+        function setupEventListeners() {
+            ['lineA', 'lineB', 'lineC'].forEach(id => {
+                const slider = document.getElementById(id);
+                if (slider) {
+                    slider.addEventListener('input', function() {
+                        updateLineCanvas();
+                        updateDistanceCanvas();
+                        updatePerpendicularCanvas();
+                    });
+                }
+            });
+
+            ['pointX', 'pointY'].forEach(id => {
+                const slider = document.getElementById(id);
+                if (slider) {
+                    slider.addEventListener('input', updateDistanceCanvas);
+                }
+            });
+
+            ['lineA2', 'lineB2', 'lineC2'].forEach(id => {
+                const slider = document.getElementById(id);
+                if (slider) {
+                    slider.addEventListener('input', updatePerpendicularCanvas);
+                }
+            });
+        }
+
+        function updateLineCanvas() {
+            const width = lineCanvas.width;
+            const height = lineCanvas.height;
+            
+            // Effacer le canvas
+            lineCtx.fillStyle = '#f8fafc';
+            lineCtx.fillRect(0, 0, width, height);
+            
+            // Dessiner la grille
+            drawGrid(lineCtx, width, height);
+            
+            // Obtenir les valeurs
+            const a = parseFloat(document.getElementById('lineA').value);
+            const b = parseFloat(document.getElementById('lineB').value);
+            const c = parseFloat(document.getElementById('lineC').value);
+            
+            // Mettre à jour les affichages
+            updateSliderDisplay('lineA', a);
+            updateSliderDisplay('lineB', b);
+            updateSliderDisplay('lineC', c);
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 30;
+            
+            // Dessiner la droite ax + by + c = 0
+            drawLine(lineCtx, a, b, c, centerX, centerY, scale, '#4ecdc4');
+            
+            // Dessiner le vecteur normal
+            if (Math.abs(a) > 0.001 || Math.abs(b) > 0.001) {
+                const norm = Math.sqrt(a * a + b * b);
+                const nx = a / norm;
+                const ny = b / norm;
+                
+                drawVector(lineCtx, centerX, centerY, nx * scale, -ny * scale, '#ff6b6b', 'n⃗');
+                
+                // Dessiner le vecteur directeur
+                drawVector(lineCtx, centerX, centerY, -ny * scale, -nx * scale, '#feca57', 'u⃗');
+            }
+            
+            // Mettre à jour les informations
+            updateLineInfo(a, b, c);
+        }
+
+        function updateDistanceCanvas() {
+            const width = distanceCanvas.width;
+            const height = distanceCanvas.height;
+            
+            // Effacer le canvas
+            distanceCtx.fillStyle = '#f8fafc';
+            distanceCtx.fillRect(0, 0, width, height);
+            
+            // Dessiner la grille
+            drawGrid(distanceCtx, width, height);
+            
+            // Obtenir les valeurs
+            const a = parseFloat(document.getElementById('lineA').value);
+            const b = parseFloat(document.getElementById('lineB').value);
+            const c = parseFloat(document.getElementById('lineC').value);
+            const px = parseFloat(document.getElementById('pointX').value);
+            const py = parseFloat(document.getElementById('pointY').value);
+            
+            updateSliderDisplay('pointX', px);
+            updateSliderDisplay('pointY', py);
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 30;
+            
+            // Dessiner la droite
+            drawLine(distanceCtx, a, b, c, centerX, centerY, scale, '#4ecdc4');
+            
+            // Dessiner le point principal
+            drawPoint(distanceCtx, centerX + px * scale, centerY - py * scale, 'P', '#ff6b6b');
+            
+            // Dessiner les points additionnels
+            additionalPoints.forEach((point, index) => {
+                drawPoint(distanceCtx, centerX + point.x * scale, centerY - point.y * scale, `P${index + 2}`, '#feca57');
+                
+                // Calculer et dessiner la distance
+                const distance = Math.abs(a * point.x + b * point.y + c) / Math.sqrt(a * a + b * b);
+                
+                // Trouver le pied de la perpendiculaire
+                const norm2 = a * a + b * b;
+                if (norm2 > 0) {
+                    const t = -(a * point.x + b * point.y + c) / norm2;
+                    const footX = point.x + t * a;
+                    const footY = point.y + t * b;
+                    
+                    // Dessiner la perpendiculaire
+                    distanceCtx.setLineDash([3, 3]);
+                    distanceCtx.strokeStyle = '#95a5a6';
+                    distanceCtx.lineWidth = 1;
+                    distanceCtx.beginPath();
+                    distanceCtx.moveTo(centerX + point.x * scale, centerY - point.y * scale);
+                    distanceCtx.lineTo(centerX + footX * scale, centerY - footY * scale);
+                    distanceCtx.stroke();
+                    distanceCtx.setLineDash([]);
+                }
+            });
+            
+            // Calculer et dessiner la distance pour le point principal
+            const distance = Math.abs(a * px + b * py + c) / Math.sqrt(a * a + b * b);
+            
+            // Trouver le pied de la perpendiculaire
+            const norm2 = a * a + b * b;
+            if (norm2 > 0) {
+                const t = -(a * px + b * py + c) / norm2;
+                const footX = px + t * a;
+                const footY = py + t * b;
+                
+                // Dessiner la perpendiculaire
+                distanceCtx.setLineDash([5, 5]);
+                distanceCtx.strokeStyle = '#e17055';
+                distanceCtx.lineWidth = 3;
+                distanceCtx.beginPath();
+                distanceCtx.moveTo(centerX + px * scale, centerY - py * scale);
+                distanceCtx.lineTo(centerX + footX * scale, centerY - footY * scale);
+                distanceCtx.stroke();
+                distanceCtx.setLineDash([]);
+                
+                drawPoint(distanceCtx, centerX + footX * scale, centerY - footY * scale, 'H', '#e17055');
+                
+                // Mettre à jour les affichages
+                document.getElementById('projectedPoint').textContent = `${footX.toFixed(2)}, ${footY.toFixed(2)}`;
+                document.getElementById('projectedDistance').textContent = distance.toFixed(3);
+            }
+            
+            document.getElementById('pointCoords').textContent = `${px.toFixed(1)}, ${py.toFixed(1)}`;
+            document.getElementById('distanceValue').textContent = distance.toFixed(3);
+            document.getElementById('substitution').textContent = `${a.toFixed(1)}×${px.toFixed(1)} + ${b.toFixed(1)}×${py.toFixed(1)} + ${c.toFixed(1)}`;
+            document.getElementById('denominator').textContent = (a * a + b * b).toFixed(1);
+        }
+
+        function updatePerpendicularCanvas() {
+            const width = perpendicularCanvas.width;
+            const height = perpendicularCanvas.height;
+            
+            // Effacer le canvas
+            perpendicularCtx.fillStyle = '#f8fafc';
+            perpendicularCtx.fillRect(0, 0, width, height);
+            
+            // Dessiner la grille
+            drawGrid(perpendicularCtx, width, height);
+            
+            // Obtenir les valeurs
+            const a1 = parseFloat(document.getElementById('lineA').value);
+            const b1 = parseFloat(document.getElementById('lineB').value);
+            const c1 = parseFloat(document.getElementById('lineC').value);
+            const a2 = parseFloat(document.getElementById('lineA2').value);
+            const b2 = parseFloat(document.getElementById('lineB2').value);
+            const c2 = parseFloat(document.getElementById('lineC2').value);
+            
+            updateSliderDisplay('lineA2', a2);
+            updateSliderDisplay('lineB2', b2);
+            updateSliderDisplay('lineC2', c2);
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 30;
+            
+            // Dessiner les deux droites
+            drawLine(perpendicularCtx, a1, b1, c1, centerX, centerY, scale, '#4ecdc4');
+            drawLine(perpendicularCtx, a2, b2, c2, centerX, centerY, scale, '#ff6b6b');
+            
+            // Dessiner les vecteurs normaux
+            if (Math.abs(a1) > 0.001 || Math.abs(b1) > 0.001) {
+                const norm1 = Math.sqrt(a1 * a1 + b1 * b1);
+                const nx1 = a1 / norm1;
+                const ny1 = b1 / norm1;
+                drawVector(perpendicularCtx, centerX - 60, centerY - 60, nx1 * scale * 0.7, -ny1 * scale * 0.7, '#4ecdc4', 'n₁');
+            }
+            
+            if (Math.abs(a2) > 0.001 || Math.abs(b2) > 0.001) {
+                const norm2 = Math.sqrt(a2 * a2 + b2 * b2);
+                const nx2 = a2 / norm2;
+                const ny2 = b2 / norm2;
+                drawVector(perpendicularCtx, centerX + 60, centerY - 60, nx2 * scale * 0.7, -ny2 * scale * 0.7, '#ff6b6b', 'n₂');
+            }
+            
+            // Calculer la condition de perpendicularité
+            const perpendicularProduct = a1 * a2 + b1 * b2;
+            const isPerpendicular = Math.abs(perpendicularProduct) < 0.1;
+            
+            // Calculer l'angle entre les droites
+            const norm1 = Math.sqrt(a1 * a1 + b1 * b1);
+            const norm2 = Math.sqrt(a2 * a2 + b2 * b2);
+            const cosAngle = Math.abs(perpendicularProduct) / (norm1 * norm2);
+            const angle = Math.acos(Math.max(0, Math.min(1, cosAngle))) * 180 / Math.PI;
+            
+            // Mettre à jour les affichages
+            updatePerpendicularInfo(a1, b1, c1, a2, b2, c2, perpendicularProduct, isPerpendicular, angle);
+        }
+
+        function drawGrid(ctx, width, height) {
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 30;
+            
+            // Lignes de grille
+            for (let i = -10; i <= 10; i++) {
+                if (i !== 0) {
+                    // Lignes verticales
+                    ctx.beginPath();
+                    ctx.moveTo(centerX + i * scale, 0);
+                    ctx.lineTo(centerX + i * scale, height);
+                    ctx.stroke();
+                    
+                    // Lignes horizontales
+                    ctx.beginPath();
+                    ctx.moveTo(0, centerY + i * scale);
+                    ctx.lineTo(width, centerY + i * scale);
+                    ctx.stroke();
+                }
+            }
+            
+            // Axes principaux
+            ctx.strokeStyle = '#2d3748';
+            ctx.lineWidth = 2;
+            
+            // Axe X
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(width, centerY);
+            ctx.stroke();
+            
+            // Axe Y
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, height);
+            ctx.stroke();
+        }
+
+        function drawLine(ctx, a, b, c, centerX, centerY, scale, color) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            
+            if (Math.abs(b) > 0.001) {
+                // Droite non verticale
+                const x1 = -width / (2 * scale);
+                const y1 = -(a * x1 + c) / b;
+                const x2 = width / (2 * scale);
+                const y2 = -(a * x2 + c) / b;
+                
+                ctx.beginPath();
+                ctx.moveTo(centerX + x1 * scale, centerY - y1 * scale);
+                ctx.lineTo(centerX + x2 * scale, centerY - y2 * scale);
+                ctx.stroke();
+            } else if (Math.abs(a) > 0.001) {
+                // Droite verticale
+                const x = -c / a;
+                ctx.beginPath();
+                ctx.moveTo(centerX + x * scale, 0);
+                ctx.lineTo(centerX + x * scale, height);
+                ctx.stroke();
+            }
+        }
+
+        function drawVector(ctx, startX, startY, dx, dy, color, label) {
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 3;
+            
+            // Ligne du vecteur
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(startX + dx, startY + dy);
+            ctx.stroke();
+            
+            // Flèche
+            const angle = Math.atan2(dy, dx);
+            const arrowLength = 8;
+            const arrowAngle = Math.PI / 6;
+            
+            ctx.beginPath();
+            ctx.moveTo(startX + dx, startY + dy);
+            ctx.lineTo(
+                startX + dx - arrowLength * Math.cos(angle - arrowAngle),
+                startY + dy - arrowLength * Math.sin(angle - arrowAngle)
+            );
+            ctx.moveTo(startX + dx, startY + dy);
+            ctx.lineTo(
+                startX + dx - arrowLength * Math.cos(angle + arrowAngle),
+                startY + dy - arrowLength * Math.sin(angle + arrowAngle)
+            );
+            ctx.stroke();
+            
+            // Label
+            ctx.fillStyle = color;
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText(label, startX + dx + 5, startY + dy - 5);
+        }
+
+        function drawPoint(ctx, x, y, label, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(x, y, 5, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.fillStyle = '#2d3748';
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText(label, x + 8, y - 8);
+        }
+
+        function updateSliderDisplay(id, value) {
+            const display = document.getElementById(id + 'Value');
+            if (display) {
+                display.textContent = value.toFixed(1);
+            }
+        }
+
+        function updateLineInfo(a, b, c) {
+            // Équation
+            let equation = '';
+            if (Math.abs(a) > 0.001) equation += a.toFixed(1) + 'x';
+            if (Math.abs(b) > 0.001) {
+                if (equation && b > 0) equation += ' + ';
+                else if (b < 0) equation += ' - ';
+                equation += Math.abs(b).toFixed(1) + 'y';
+            }
+            if (Math.abs(c) > 0.001) {
+                if (equation && c > 0) equation += ' + ';
+                else if (c < 0) equation += ' - ';
+                equation += Math.abs(c).toFixed(1);
+            }
+            equation += ' = 0';
+            
+            document.getElementById('lineEquation').textContent = equation;
+            document.getElementById('normalVector').textContent = a.toFixed(1) + ', ' + b.toFixed(1);
+            document.getElementById('directionVector').textContent = (-b).toFixed(1) + ', ' + a.toFixed(1);
+            
+            // Pente
+            const slope = Math.abs(b) > 0.001 ? -a/b : '∞';
+            document.getElementById('slope').textContent = typeof slope === 'number' ? slope.toFixed(2) : slope;
+            
+            // Ordonnée à l'origine
+            const yInt = Math.abs(b) > 0.001 ? -c/b : '∞';
+            document.getElementById('yIntercept').textContent = typeof yInt === 'number' ? yInt.toFixed(2) : yInt;
+            
+            // Distance à l'origine
+            const distOrigin = Math.abs(c) / Math.sqrt(a * a + b * b);
+            document.getElementById('distanceOrigin').textContent = distOrigin.toFixed(2);
+        }
+
+        function updatePerpendicularInfo(a1, b1, c1, a2, b2, c2, product, isPerpendicular, angle) {
+            // Équations
+            let eq1 = '';
+            if (Math.abs(a1) > 0.001) eq1 += a1.toFixed(1) + 'x';
+            if (Math.abs(b1) > 0.001) {
+                if (eq1 && b1 > 0) eq1 += ' + ';
+                else if (b1 < 0) eq1 += ' - ';
+                eq1 += Math.abs(b1).toFixed(1) + 'y';
+            }
+            if (Math.abs(c1) > 0.001) {
+                if (eq1 && c1 > 0) eq1 += ' + ';
+                else if (c1 < 0) eq1 += ' - ';
+                eq1 += Math.abs(c1).toFixed(1);
+            }
+            eq1 += ' = 0';
+            
+            let eq2 = '';
+            if (Math.abs(a2) > 0.001) eq2 += a2.toFixed(1) + 'x';
+            if (Math.abs(b2) > 0.001) {
+                if (eq2 && b2 > 0) eq2 += ' + ';
+                else if (b2 < 0) eq2 += ' - ';
+                eq2 += Math.abs(b2).toFixed(1) + 'y';
+            }
+            if (Math.abs(c2) > 0.001) {
+                if (eq2 && c2 > 0) eq2 += ' + ';
+                else if (c2 < 0) eq2 += ' - ';
+                eq2 += Math.abs(c2).toFixed(1);
+            }
+            eq2 += ' = 0';
+            
+            document.getElementById('line1Equation').textContent = eq1;
+            document.getElementById('line2Equation').textContent = eq2;
+            document.getElementById('perpendicularCalc').textContent = `${a1.toFixed(1)}×${a2.toFixed(1)} + ${b1.toFixed(1)}×${b2.toFixed(1)} = ${product.toFixed(1)}`;
+            document.getElementById('perpendicularResult').textContent = isPerpendicular ? 'Perpendiculaires' : 'Non perpendiculaires';
+            document.getElementById('angleLines').textContent = angle.toFixed(1);
+        }
+
+        function addRandomPoint() {
+            const newPoint = {
+                x: (Math.random() - 0.5) * 10,
+                y: (Math.random() - 0.5) * 8
+            };
+            additionalPoints.push(newPoint);
+            updateDistanceCanvas();
+        }
+
+        function clearPoints() {
+            additionalPoints = [];
+            updateDistanceCanvas();
+        }
+    </script>
+</body>
+</html>

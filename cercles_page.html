@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cercles - Cours Interactif</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn.home {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section h1 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-align: center;
+        }
+
+        .canvas-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .canvas-wrapper {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .canvas-wrapper:hover {
+            transform: scale(1.02);
+        }
+
+        canvas {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f8fafc;
+            cursor: crosshair;
+        }
+
+        .controls {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .value-display {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 5px;
+            font-weight: bold;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #e17055;
+            font-size: 1.2em;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .info-panel {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #6c5ce7;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .status-indicators {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            justify-content: center;
+        }
+
+        .status-indicator {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .exterior {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .on-circle {
+            background: #4ecdc4;
+            color: white;
+        }
+
+        .interior {
+            background: #45b7d1;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .canvas-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⭕ Cercles</h1>
+            <p>Explorez les équations et propriétés des cercles</p>
+        </div>
+
+        <div class="navigation">
+            <a href="index.html" class="nav-btn home">🏠 Accueil</a>
+            <a href="vecteurs.html" class="nav-btn">🔢 Vecteurs</a>
+            <a href="angles.html" class="nav-btn">📐 Angles</a>
+            <a href="droites.html" class="nav-btn">📏 Droites</a>
+            <a href="parametrique.html" class="nav-btn">🔄 Paramétrique</a>
+            <a href="intersections.html" class="nav-btn">🎯 Intersections</a>
+        </div>
+
+        <div class="section">
+            <h1>Cercle Interactif</h1>
+            
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <h3>Manipulation du Cercle</h3>
+                    <canvas id="circleCanvas" width="500" height="400"></canvas>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>Centre - Coordonnée x:</label>
+                            <input type="range" id="centerX" min="-3" max="3" value="0" step="0.1">
+                            <span class="value-display" id="centerXValue">0.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Centre - Coordonnée y:</label>
+                            <input type="range" id="centerY" min="-3" max="3" value="0" step="0.1">
+                            <span class="value-display" id="centerYValue">0.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Rayon:</label>
+                            <input type="range" id="radius" min="0.5" max="4" value="2" step="0.1">
+                            <span class="value-display" id="radiusValue">2.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📝 Équations du Cercle</h3>
+                    <div class="formula-box">
+                        <p><strong>Forme canonique:</strong></p>
+                        <p>(x - <span id="circleH">0</span>)² + (y - <span id="circleK">0</span>)² = <span id="circleR2">4</span></p>
+                    </div>
+                    <div class="formula-box">
+                        <p><strong>Forme développée:</strong></p>
+                        <p><span id="expandedForm">x² + y² = 4</span></p>
+                    </div>
+                    <div class="info-panel">
+                        <p><strong>Centre:</strong> Ω(<span id="circleCenterCoords">0, 0</span>)</p>
+                        <p><strong>Rayon:</strong> R = <span id="circleRadiusDisplay">2.0</span></p>
+                        <p><strong>Aire:</strong> A = πR² = <span id="circleArea">12.57</span></p>
+                        <p><strong>Périmètre:</strong> P = 2πR = <span id="circlePerimeter">12.57</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h1>Intérieur/Extérieur du Cercle</h1>
+            
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <h3>Test de Position Interactive</h3>
+                    <canvas id="insideOutsideCanvas" width="500" height="400"></canvas>
+                    <div class="info-panel">
+                        <p>Cliquez sur le canvas pour placer des points!</p>
+                        <div class="status-indicators">
+                            <span class="status-indicator exterior">● Extérieur du cercle</span>
+                            <span class="status-indicator on-circle">● Sur le cercle</span>
+                            <span class="status-indicator interior">● Intérieur du cercle</span>
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <button class="btn" onclick="clearPoints()">🗑️ Effacer les Points</button>
+                        <button class="btn" onclick="addRandomPoints()">🎲 Points Aléatoires</button>
+                        <div class="formula-box">
+                            <p><strong>Condition:</strong></p>
+                            <p>d(M,Ω) < R → Intérieur</p>
+                            <p>d(M,Ω) = R → Sur le cercle</p>
+                            <p>d(M,Ω) > R → Extérieur</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📊 Statistiques des Points</h3>
+                    <div class="info-panel">
+                        <p><strong>Points placés:</strong> <span id="totalPoints">0</span></p>
+                        <p><strong>Intérieur:</strong> <span id="interiorCount">0</span></p>
+                        <p><strong>Sur le cercle:</strong> <span id="onCircleCount">0</span></p>
+                        <p><strong>Extérieur:</strong> <span id="exteriorCount">0</span></p>
+                    </div>
+                    <div class="formula-box">
+                        <p><strong>Approximation de π:</strong></p>
+                        <p>π ≈ 4 × (Points intérieurs / Total)</p>
+                        <p>π ≈ <span id="piApproximation">-</span></p>
+                    </div>
+                    <div class="info-panel">
+                        <p><strong>Point sélectionné:</strong></p>
+                        <p>Coordonnées: (<span id="selectedPoint">-, -</span>)</p>
+                        <p>Distance au centre: <span id="selectedDistance">-</span></p>
+                        <p>Position: <span id="selectedPosition">-</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h1>Cercle par Trois Points</h1>
+            
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <h3>Construction par Trois Points</h3>
+                    <canvas id="threePointsCanvas" width="500" height="400"></canvas>
+                    <div class="controls">
+                        <button class="btn" onclick="randomizeThreePoints()">🎲 Nouveaux Points</button>
+                        <button class="btn" onclick="resetThreePoints()">↺ Réinitialiser</button>
+                        <div class="info-panel">
+                            <p>Glissez les points A, B, C pour modifier le cercle circonscrit</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🎯 Cercle Circonscrit</h3>
+                    <div class="formula-box">
+                        <p><strong>Points du triangle:</strong></p>
+                        <p>A(<span id="pointACoords">1, 1</span>)</p>
+                        <p>B(<span id="pointBCoords">4, 1</span>)</p>
+                        <p>C(<span id="pointCCoords">2, 4</span>)</p>
+                    </div>
+                    <div class="info-panel">
+                        <p><strong>Centre du cercle:</strong> Ω(<span id="circumcenterCoords">2.5, 2.5</span>)</p>
+                        <p><strong>Rayon:</strong> R = <span id="circumradius">2.12</span></p>
+                        <p><strong>Aire du triangle:</strong> S = <span id="triangleAreaValue">4.5</span></p>
+                    </div>
+                    <div class="formula-box">
+                        <p><strong>Équation du cercle:</strong></p>
+                        <p><span id="circumcircleEquation">(x-2.5)² + (y-2.5)² = 4.5</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <h3>📚 Concepts clés - Cercles</h3>
+            <p><strong>Équation canonique :</strong> (x - a)² + (y - b)² = R² où (a,b) est le centre et R le rayon</p>
+            <p><strong>Équation développée :</strong> x² + y² + Dx + Ey + F = 0 avec D = -2a, E = -2b, F = a² + b² - R²</p>
+            <p><strong>Position d'un point :</strong> Comparer la distance du point au centre avec le rayon</p>
+            <p><strong>Cercle circonscrit :</strong> Le cercle passant par trois points non alignés</p>
+            <p><strong>Discriminant :</strong> Δ = D² + E² - 4F détermine l'existence du cercle</p>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let circleCanvas, circleCtx;
+        let insideOutsideCanvas, insideOutsideCtx;
+        let threePointsCanvas, threePointsCtx;
+        let clickedPoints = [];
+        let threePoints = {
+            A: {x: 100, y: 300, dragging: false},
+            B: {x: 400, y: 100, dragging: false},
+            C: {x: 350, y: 350, dragging: false}
+        };
+        let draggedPoint = null;
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            circleCanvas = document.getElementById('circleCanvas');
+            circleCtx = circleCanvas.getContext('2d');
+            insideOutsideCanvas = document.getElementById('insideOutsideCanvas');
+            insideOutsideCtx = insideOutsideCanvas.getContext('2d');
+            threePointsCanvas = document.getElementById('threePointsCanvas');
+            threePointsCtx = threePointsCanvas.getContext('2d');
+            
+            setupEventListeners();
+            updateCircleCanvas();
+            updateInsideOutsideCanvas();
+            updateThreePointsCanvas();
+        });
+
+        function setupEventListeners() {
+            // Contrôles du cercle
+            ['centerX', 'centerY', 'radius'].forEach(id => {
+                const slider = document.getElementById(id);
+                if (slider) {
+                    slider.addEventListener('input', function() {
+                        updateCircleCanvas();
+                        updateInsideOutsideCanvas();
+                    });
+                }
+            });
+
+            // Canvas intérieur/extérieur
+            insideOutsideCanvas.addEventListener('click', handleInsideOutsideClick);
+
+            // Canvas trois points
+            threePointsCanvas.addEventListener('mousedown', handleThreePointsMouseDown);
+            threePointsCanvas.addEventListener('mousemove', handleThreePointsMouseMove);
+            threePointsCanvas.addEventListener('mouseup', handleThreePointsMouseUp);
+        }
+
+        function updateCircleCanvas() {
+            const width = circleCanvas.width;
+            const height = circleCanvas.height;
+            
+            // Effacer le canvas
+            circleCtx.fillStyle = '#f8fafc';
+            circleCtx.fillRect(0, 0, width, height);
+            
+            // Dessiner la grille
+            drawGrid(circleCtx, width, height);
+            
+            // Obtenir les valeurs
+            const centerX_val = parseFloat(document.getElementById('centerX').value);
+            const centerY_val = parseFloat(document.getElementById('centerY').value);
+            const radius_val = parseFloat(document.getElementById('radius').value);
+            
+            // Mettre à jour les affichages
+            updateSliderDisplay('centerX', centerX_val);
+            updateSliderDisplay('centerY', centerY_val);
+            updateSliderDisplay('radius', radius_val);
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 30;
+            
+            // Dessiner le cercle
+            circleCtx.strokeStyle = '#4ecdc4';
+            circleCtx.fillStyle = 'rgba(78, 205, 196, 0.1)';
+            circleCtx.lineWidth = 3;
+            circleCtx.beginPath();
+            circleCtx.arc(
+                centerX + centerX_val * scale,
+                centerY - centerY_val * scale,
+                radius_val * scale,
+                0,
+                2 * Math.PI
+            );
+            circleCtx.fill();
+            circleCtx.stroke();
+            
+            // Dessiner le centre
+            drawPoint(circleCtx, centerX + centerX_val * scale, centerY - centerY_val * scale, 'Ω', '#ff6b6b');
+            
+            // Dessiner le rayon
+            circleCtx.setLineDash([3, 3]);
+            circleCtx.strokeStyle = '#ff6b6b';
+            circleCtx.lineWidth = 2;
+            circleCtx.beginPath();
+            circleCtx.moveTo(centerX + centerX_val * scale, centerY - centerY_val * scale);
+            circleCtx.lineTo(centerX + (centerX_val + radius_val) * scale, centerY - centerY_val * scale);
+            circleCtx.stroke();
+            circleCtx.setLineDash([]);
+            
+            // Mettre à jour les informations
+            updateCircleInfo(centerX_val, centerY_val, radius_val);
+        }
+
+        function updateInsideOutsideCanvas() {
+            const width = insideOutsideCanvas.width;
+            const height = insideOutsideCanvas.height;
+            
+            // Effacer le canvas
+            insideOutsideCtx.fillStyle = '#f8fafc';
+            insideOutsideCtx.fillRect(0, 0, width, height);
+            
+            // Dessiner la grille
+            drawGrid(insideOutsideCtx, width, height);
+            
+            // Obtenir les valeurs du cercle
+            const centerX_val = parseFloat(document.getElementById('centerX').value);
+            const centerY_val = parseFloat(document.getElementById('centerY').value);
+            const radius_val = parseFloat(document.getElementById('radius').value);
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 30;
+            
+            // Dessiner le cercle
+            insideOutsideCtx.strokeStyle = '#2d3748';
+            insideOutsideCtx.lineWidth = 3;
+            insideOutsideCtx.beginPath();
+            insideOutsideCtx.arc(
+                centerX + centerX_val * scale,
+                centerY - centerY_val * scale,
+                radius_val * scale,
+                0,
+                2 * Math.PI
+            );
+            insideOutsideCtx.stroke();
+            
+            // Dessiner le centre
+            drawPoint(insideOutsideCtx, centerX + centerX_val * scale, centerY - centerY_val * scale, 'Ω', '#2d3748');
+            
+            // Compter les points
+            let interiorCount = 0, onCircleCount = 0, exteriorCount = 0;
+            
+            // Dessiner les points cliqués
+            clickedPoints.forEach((point, index) => {
+                const dist = Math.sqrt(
+                    Math.pow(point.x - centerX_val, 2) + Math.pow(point.y - centerY_val, 2)
+                );
+                
+                let color, position;
+                if (Math.abs(dist - radius_val) < 0.15) {
+                    color = '#4ecdc4'; // Sur le cercle
+                    position = 'Sur le cercle';
+                    onCircleCount++;
+                } else if (dist < radius_val) {
+                    color = '#45b7d1'; // Intérieur
+                    position = 'Intérieur';
+                    interiorCount++;
+                } else {
+                    color = '#ff6b6b'; // Extérieur
+                    position = 'Extérieur';
+                    exteriorCount++;
+                }
+                
+                insideOutsideCtx.fillStyle = color;
+                insideOutsideCtx.beginPath();
+                insideOutsideCtx.arc(
+                    centerX + point.x * scale,
+                    centerY - point.y * scale,
+                    4,
+                    0,
+                    2 * Math.PI
+                );
+                insideOutsideCtx.fill();
+                
+                // Numéroter les points
+                insideOutsideCtx.fillStyle = '#2d3748';
+                insideOutsideCtx.font = '10px Arial';
+                insideOutsideCtx.fillText(
+                    (index + 1).toString(),
+                    centerX + point.x * scale + 6,
+                    centerY - point.y * scale - 6
+                );
+            });
+            
+            // Mettre à jour les statistiques
+            updatePointStatistics(interiorCount, onCircleCount, exteriorCount);
+        }
+
+        function updateThreePointsCanvas() {
+            const width = threePointsCanvas.width;
+            const height = threePointsCanvas.height;
+            
+            // Effacer le canvas
+            threePointsCtx.fillStyle = '#f8fafc';
+            threePointsCtx.fillRect(0, 0, width, height);
+            
+            // Dessiner la grille
+            drawGrid(threePointsCtx, width, height);
+            
+            const A = threePoints.A;
+            const B = threePoints.B;
+            const C = threePoints.C;
+            
+            // Vérifier si les points sont alignés
+            const area = Math.abs((B.x - A.x) * (C.y - A.y) - (C.x - A.x) * (B.y - A.y)) / 2;
+            
+            if (area < 5) {
+                // Points alignés
+                threePointsCtx.fillStyle = '#ff6b6b';
+                threePointsCtx.font = '16px Arial';
+                threePointsCtx.fillText('Points alignés - Pas de cercle unique', width/2 - 120, height/2);
+            } else {
+                // Calculer le centre du cercle circonscrit
+                const circumcenter = calculateCircumcenter(A, B, C);
+                const radius = Math.sqrt(
+                    Math.pow(A.x - circumcenter.x, 2) + Math.pow(A.y - circumcenter.y, 2)
+                );
+                
+                // Dessiner le cercle circonscrit
+                threePointsCtx.strokeStyle = '#4ecdc4';
+                threePointsCtx.fillStyle = 'rgba(78, 205, 196, 0.1)';
+                threePointsCtx.lineWidth = 2;
+                threePointsCtx.beginPath();
+                threePointsCtx.arc(circumcenter.x, circumcenter.y, radius, 0, 2 * Math.PI);
+                threePointsCtx.fill();
+                threePointsCtx.stroke();
+                
+                // Dessiner le centre
+                drawPoint(threePointsCtx, circumcenter.x, circumcenter.y, 'Ω', '#2d3748');
+                
+                // Mettre à jour les informations
+                updateThreePointsInfo(A, B, C, circumcenter, radius, area);
+            }
+            
+            // Dessiner le triangle
+            threePointsCtx.strokeStyle = '#2d3748';
+            threePointsCtx.lineWidth = 2;
+            threePointsCtx.beginPath();
+            threePointsCtx.moveTo(A.x, A.y);
+            threePointsCtx.lineTo(B.x, B.y);
+            threePointsCtx.lineTo(C.x, C.y);
+            threePointsCtx.closePath();
+            threePointsCtx.stroke();
+            
+            // Dessiner les points
+            drawPoint(threePointsCtx, A.x, A.y, 'A', '#ff6b6b');
+            drawPoint(threePointsCtx, B.x, B.y, 'B', '#4ecdc4');
+            drawPoint(threePointsCtx, C.x, C.y, 'C', '#feca57');
+        }
+
+        function drawGrid(ctx, width, height) {
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 30;
+            
+            // Lignes de grille
+            for (let i = -10; i <= 10; i++) {
+                if (i !== 0) {
+                    // Lignes verticales
+                    ctx.beginPath();
+                    ctx.moveTo(centerX + i * scale, 0);
+                    ctx.lineTo(centerX + i * scale, height);
+                    ctx.stroke();
+                    
+                    // Lignes horizontales
+                    ctx.beginPath();
+                    ctx.moveTo(0, centerY + i * scale);
+                    ctx.lineTo(width, centerY + i * scale);
+                    ctx.stroke();
+                }
+            }
+            
+            // Axes principaux
+            ctx.strokeStyle = '#2d3748';
+            ctx.lineWidth = 2;
+            
+            // Axe X
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(width, centerY);
+            ctx.stroke();
+            
+            // Axe Y
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, height);
+            ctx.stroke();
+        }
+
+        function drawPoint(ctx, x, y, label, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(x, y, 6, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.fillStyle = '#2d3748';
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText(label, x + 10, y - 10);
+        }
+
+        function updateSliderDisplay(id, value) {
+            const display = document.getElementById(id + 'Value');
+            if (display) {
+                display.textContent = value.toFixed(1);
+            }
+        }
+
+        function updateCircleInfo(centerX_val, centerY_val, radius_val) {
+            document.getElementById('circleH').textContent = centerX_val.toFixed(1);
+            document.getElementById('circleK').textContent = centerY_val.toFixed(1);
+            document.getElementById('circleR2').textContent = (radius_val * radius_val).toFixed(1);
+            document.getElementById('circleCenterCoords').textContent = centerX_val.toFixed(1) + ', ' + centerY_val.toFixed(1);
+            document.getElementById('circleRadiusDisplay').textContent = radius_val.toFixed(1);
+            document.getElementById('circleArea').textContent = (Math.PI * radius_val * radius_val).toFixed(2);
+            document.getElementById('circlePerimeter').textContent = (2 * Math.PI * radius_val).toFixed(2);
+            
+            // Forme développée
+            const a = -2 * centerX_val;
+            const b = -2 * centerY_val;
+            const c = centerX_val * centerX_val + centerY_val * centerY_val - radius_val * radius_val;
+            
+            let expanded = 'x² + y²';
+            if (Math.abs(a) > 0.001) {
+                expanded += (a > 0 ? ' + ' : ' - ') + Math.abs(a).toFixed(1) + 'x';
+            }
+            if (Math.abs(b) > 0.001) {
+                expanded += (b > 0 ? ' + ' : ' - ') + Math.abs(b).toFixed(1) + 'y';
+            }
+            if (Math.abs(c) > 0.001) {
+                expanded += (c > 0 ? ' + ' : ' - ') + Math.abs(c).toFixed(1);
+            }
+            expanded += ' = 0';
+            
+            document.getElementById('expandedForm').textContent = expanded;
+        }
+
+        function updatePointStatistics(interior, onCircle, exterior) {
+            const total = interior + onCircle + exterior;
+            document.getElementById('totalPoints').textContent = total;
+            document.getElementById('interiorCount').textContent = interior;
+            document.getElementById('onCircleCount').textContent = onCircle;
+            document.getElementById('exteriorCount').textContent = exterior;
+            
+            // Approximation de π (méthode Monte Carlo)
+            if (total > 0) {
+                const piApprox = 4 * interior / total;
+                document.getElementById('piApproximation').textContent = piApprox.toFixed(3);
+            } else {
+                document.getElementById('piApproximation').textContent = '-';
+            }
+        }
+
+        function updateThreePointsInfo(A, B, C, center, radius, area) {
+            const scale = 50; // Pour conversion affichage
+            
+            document.getElementById('pointACoords').textContent = `${((A.x - 250)/scale).toFixed(1)}, ${((200 - A.y)/scale).toFixed(1)}`;
+            document.getElementById('pointBCoords').textContent = `${((B.x - 250)/scale).toFixed(1)}, ${((200 - B.y)/scale).toFixed(1)}`;
+            document.getElementById('pointCCoords').textContent = `${((C.x - 250)/scale).toFixed(1)}, ${((200 - C.y)/scale).toFixed(1)}`;
+            
+            document.getElementById('circumcenterCoords').textContent = `${((center.x - 250)/scale).toFixed(2)}, ${((200 - center.y)/scale).toFixed(2)}`;
+            document.getElementById('circumradius').textContent = (radius/scale).toFixed(2);
+            document.getElementById('triangleAreaValue').textContent = (area/(scale*scale)).toFixed(2);
+            
+            const h = (center.x - 250)/scale;
+            const k = (200 - center.y)/scale;
+            const r = radius/scale;
+            document.getElementById('circumcircleEquation').textContent = `(x${h >= 0 ? '-' : '+'}${Math.abs(h).toFixed(1)})² + (y${k >= 0 ? '-' : '+'}${Math.abs(k).toFixed(1)})² = ${(r*r).toFixed(1)}`;
+        }
+
+        function calculateCircumcenter(A, B, C) {
+            const D = 2 * (A.x * (B.y - C.y) + B.x * (C.y - A.y) + C.x * (A.y - B.y));
+            
+            if (Math.abs(D) < 1e-6) {
+                return {x: (A.x + B.x + C.x) / 3, y: (A.y + B.y + C.y) / 3}; // Points alignés
+            }
+            
+            const ux = ((A.x * A.x + A.y * A.y) * (B.y - C.y) + (B.x * B.x + B.y * B.y) * (C.y - A.y) + (C.x * C.x + C.y * C.y) * (A.y - B.y)) / D;
+            const uy = ((A.x * A.x + A.y * A.y) * (C.x - B.x) + (B.x * B.x + B.y * B.y) * (A.x - C.x) + (C.x * C.x + C.y * C.y) * (B.x - A.x)) / D;
+            
+            return {x: ux, y: uy};
+        }
+
+        function handleInsideOutsideClick(event) {
+            const canvas = event.target;
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 30;
+            
+            // Convertir en coordonnées mathématiques
+            const mathX = (x - centerX) / scale;
+            const mathY = -(y - centerY) / scale;
+            
+            clickedPoints.push({x: mathX, y: mathY});
+            updateInsideOutsideCanvas();
+            
+            // Mettre à jour les informations du point sélectionné
+            const centerX_val = parseFloat(document.getElementById('centerX').value);
+            const centerY_val = parseFloat(document.getElementById('centerY').value);
+            const radius_val = parseFloat(document.getElementById('radius').value);
+            
+            const distance = Math.sqrt(Math.pow(mathX - centerX_val, 2) + Math.pow(mathY - centerY_val, 2));
+            let position;
+            if (Math.abs(distance - radius_val) < 0.15) {
+                position = 'Sur le cercle';
+            } else if (distance < radius_val) {
+                position = 'Intérieur';
+            } else {
+                position = 'Extérieur';
+            }
+            
+            document.getElementById('selectedPoint').textContent = `${mathX.toFixed(2)}, ${mathY.toFixed(2)}`;
+            document.getElementById('selectedDistance').textContent = distance.toFixed(3);
+            document.getElementById('selectedPosition').textContent = position;
+        }
+
+        function handleThreePointsMouseDown(event) {
+            const rect = threePointsCanvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            
+            // Vérifier si on clique près d'un point
+            for (let pointName in threePoints) {
+                const point = threePoints[pointName];
+                const distance = Math.sqrt(Math.pow(x - point.x, 2) + Math.pow(y - point.y, 2));
+                if (distance < 15) {
+                    draggedPoint = pointName;
+                    point.dragging = true;
+                    break;
+                }
+            }
+        }
+
+        function handleThreePointsMouseMove(event) {
+            if (draggedPoint) {
+                const rect = threePointsCanvas.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+                
+                // Limiter aux bordures du canvas
+                threePoints[draggedPoint].x = Math.max(20, Math.min(threePointsCanvas.width - 20, x));
+                threePoints[draggedPoint].y = Math.max(20, Math.min(threePointsCanvas.height - 20, y));
+                
+                updateThreePointsCanvas();
+            }
+        }
+
+        function handleThreePointsMouseUp() {
+            if (draggedPoint) {
+                threePoints[draggedPoint].dragging = false;
+                draggedPoint = null;
+            }
+        }
+
+        function clearPoints() {
+            clickedPoints = [];
+            updateInsideOutsideCanvas();
+            document.getElementById('selectedPoint').textContent = '-, -';
+            document.getElementById('selectedDistance').textContent = '-';
+            document.getElementById('selectedPosition').textContent = '-';
+        }
+
+        function addRandomPoints() {
+            for (let i = 0; i < 10; i++) {
+                const newPoint = {
+                    x: (Math.random() - 0.5) * 10,
+                    y: (Math.random() - 0.5) * 8
+                };
+                clickedPoints.push(newPoint);
+            }
+            updateInsideOutsideCanvas();
+        }
+
+        function randomizeThreePoints() {
+            threePoints.A = {x: 50 + Math.random() * 400, y: 50 + Math.random() * 300, dragging: false};
+            threePoints.B = {x: 50 + Math.random() * 400, y: 50 + Math.random() * 300, dragging: false};
+            threePoints.C = {x: 50 + Math.random() * 400, y: 50 + Math.random() * 300, dragging: false};
+            updateThreePointsCanvas();
+        }
+
+        function resetThreePoints() {
+            threePoints.A = {x: 100, y: 300, dragging: false};
+            threePoints.B = {x: 400, y: 100, dragging: false};
+            threePoints.C = {x: 350, y: 350, dragging: false};
+            updateThreePointsCanvas();
+        }
+    </script>
+</body>
+</html>

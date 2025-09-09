@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Représentation Paramétrique - Cours Interactif</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn.home {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section h1 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-align: center;
+        }
+
+        .canvas-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .canvas-wrapper {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .canvas-wrapper:hover {
+            transform: scale(1.02);
+        }
+
+        canvas {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+
+        .controls {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .value-display {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 5px;
+            font-weight: bold;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #e17055;
+            font-size: 1.2em;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .info-panel {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #6c5ce7;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn.play {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+
+        .btn.pause {
+            background: linear-gradient(45deg, #ff6b6b, #e55656);
+        }
+
+        .animation-controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .trail {
+            opacity: 0.6;
+        }
+
+        .current-point {
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.8);
+        }
+
+        @media (max-width: 768px) {
+            .canvas-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 Représentation Paramétrique</h1>
+            <p>Visualisez les courbes paramétriques et leur évolution</p>
+        </div>
+
+        <div class="navigation">
+            <a href="index.html" class="nav-btn home">🏠 Accueil</a>
+            <a href="vecteurs.html" class="nav-btn">🔢 Vecteurs</a>
+            <a href="angles.html" class="nav-btn">📐 Angles</a>
+            <a href="droites.html" class="nav-btn">📏 Droites</a>
+            <a href="cercles.html" class="nav-btn">⭕ Cercles</a>
+            <a href="intersections.html" class="nav-btn">🎯 Intersections</a>
+        </div>
+
+        <div class="section">
+            <h1>Animation Paramétrique de Cercle</h1>
+            
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <h3>Parcours Paramétrique Animé</h3>
+                    <canvas id="parametricCanvas" width="500" height="400"></canvas>
+                    <div class="animation-controls">
+                        <button class="btn play" id="playPauseBtn" onclick="toggleAnimation()">▶️ Play</button>
+                        <button class="btn" onclick="resetAnimation()">⏹️ Reset</button>
+                        <button class="btn" onclick="stepAnimation()">⏭️ Step</button>
+                    </div>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>Vitesse d'animation:</label>
+                            <input type="range" id="animSpeed" min="0.01" max="0.2" value="0.05" step="0.01">
+                            <span class="value-display" id="animSpeedValue">0.05</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Centre - x:</label>
+                            <input type="range" id="centerXParam" min="-2" max="2" value="1" step="0.1">
+                            <span class="value-display" id="centerXParamValue">1.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Centre - y:</label>
+                            <input type="range" id="centerYParam" min="-2" max="2" value="0" step="0.1">
+                            <span class="value-display" id="centerYParamValue">0.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Rayon:</label>
+                            <input type="range" id="radiusParam" min="0.5" max="3" value="2" step="0.1">
+                            <span class="value-display" id="radiusParamValue">2.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📊 Équations Paramétriques</h3>
+                    <div class="formula-box">
+                        <p><strong>x(t) = a + R×cos(t)</strong></p>
+                        <p><strong>y(t) = b + R×sin(t)</strong></p>
+                        <p>où t ∈ [0, 2π]</p>
+                    </div>
+                    <div class="info-panel">
+                        <p><strong>Paramètre actuel:</strong> t = <span id="currentT">0.00</span></p>
+                        <p><strong>Position:</strong> (<span id="currentX">0.00</span>, <span id="currentY">0.00</span>)</p>
+                        <p><strong>cos(t) =</strong> <span id="currentCos">1.00</span></p>
+                        <p><strong>sin(t) =</strong> <span id="currentSin">0.00</span></p>
+                    </div>
+                    <div class="formula-box">
+                        <p><strong>Vitesse:</strong></p>
+                        <p>x'(t) = -R×sin(t) = <span id="velocityX">0.00</span></p>
+                        <p>y'(t) = R×cos(t) = <span id="velocityY">2.00</span></p>
+                        <p>||v(t)|| = <span id="velocityMagnitude">2.00</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h1>Courbes Paramétriques Comparées</h1>
+            
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <h3>Cercle vs Ellipse vs Spirale</h3>
+                    <canvas id="comparisonCanvas" width="500" height="400"></canvas>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>Paramètre t:</label>
+                            <input type="range" id="tParam" min="0" max="12.56" value="0" step="0.1">
+                            <span class="value-display" id="tParamValue">0.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Type de courbe:</label>
+                            <select id="curveType" onchange="updateComparisonCanvas()">
+                                <option value="circle">Cercle</option>
+                                <option value="ellipse">Ellipse</option>
+                                <option value="spiral">Spirale</option>
+                                <option value="all">Toutes</option>
+                            </select>
+                        </div>
+                        <button class="btn" onclick="animateComparison()">🎬 Animer</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📐 Équations des Courbes</h3>
+                    <div class="formula-box">
+                        <p><strong>Cercle:</strong></p>
+                        <p>x = 2cos(t), y = 2sin(t)</p>
+                    </div>
+                    <div class="formula-box">
+                        <p><strong>Ellipse:</strong></p>
+                        <p>x = 3cos(t), y = 1.5sin(t)</p>
+                    </div>
+                    <div class="formula-box">
+                        <p><strong>Spirale:</strong></p>
+                        <p>x = t×cos(t), y = t×sin(t)</p>
+                    </div>
+                    <div class="info-panel">
+                        <p><strong>Paramètre t:</strong> <span id="currentTComparison">0.00</span></p>
+                        <p><strong>Cercle:</strong> (<span id="circlePos">2.00, 0.00</span>)</p>
+                        <p><strong>Ellipse:</strong> (<span id="ellipsePos">3.00, 0.00</span>)</p>
+                        <p><strong>Spirale:</strong> (<span id="spiralPos">0.00, 0.00</span>)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h1>Conversion Paramétrique ↔ Cartésienne</h1>
+            
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <h3>Élimination du Paramètre</h3>
+                    <canvas id="conversionCanvas" width="500" height="400"></canvas>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>Paramètre a (centre x):</label>
+                            <input type="range" id="paramA" min="-2" max="2" value="0" step="0.1">
+                            <span class="value-display" id="paramAValue">0.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Paramètre b (centre y):</label>
+                            <input type="range" id="paramB" min="-2" max="2" value="0" step="0.1">
+                            <span class="value-display" id="paramBValue">0.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Rayon R:</label>
+                            <input type="range" id="paramR" min="0.5" max="3" value="1.5" step="0.1">
+                            <span class="value-display" id="paramRValue">1.5</span>
+                        </div>
+                        <button class="btn" onclick="showConversionSteps()">📋 Étapes de Conversion</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🔄 Conversion d'Équations</h3>
+                    <div class="formula-box">
+                        <p><strong>Équations paramétriques:</strong></p>
+                        <p>x(t) = <span id="paramXEquation">0 + 1.5×cos(t)</span></p>
+                        <p>y(t) = <span id="paramYEquation">0 + 1.5×sin(t)</span></p>
+                    </div>
+                    <div class="info-panel" id="conversionSteps" style="display: none;">
+                        <p><strong>Étapes de conversion:</strong></p>
+                        <p>1. x - a = R×cos(t) → cos(t) = (x - a)/R</p>
+                        <p>2. y - b = R×sin(t) → sin(t) = (y - b)/R</p>
+                        <p>3. cos²(t) + sin²(t) = 1</p>
+                        <p>4. [(x - a)/R]² + [(y - b)/R]² = 1</p>
+                    </div>
+                    <div class="formula-box">
+                        <p><strong>Équation cartésienne:</strong></p>
+                        <p><span id="cartesianEquation">(x - 0)² + (y - 0)² = 2.25</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <h3>📚 Concepts clés - Représentation Paramétrique</h3>
+            <p><strong>Définition :</strong> Une courbe paramétrique est définie par x = f(t) et y = g(t) où t est le paramètre</p>
+            <p><strong>Cercle paramétrique :</strong> x = a + R cos(t), y = b + R sin(t) avec t ∈ [0, 2π]</p>
+            <p><strong>Vitesse :</strong> Le vecteur vitesse est v⃗(t) = (x'(t), y'(t))</p>
+            <p><strong>Élimination du paramètre :</strong> Technique pour passer de la forme paramétrique à cartésienne</p>
+            <p><strong>Avantages :</strong> Facilite l'étude du mouvement et des propriétés géométriques dynamiques</p>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let parametricCanvas, parametricCtx;
+        let comparisonCanvas, comparisonCtx;
+        let conversionCanvas, conversionCtx;
+        let animationRunning = false;
+        let animationId = null;
+        let t = 0;
+        let comparisonAnimationRunning = false;
+        let trail = [];
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            parametricCanvas = document.getElementById('parametricCanvas');
+            parametricCtx = parametricCanvas.getContext('2d');
+            comparisonCanvas = document.getElementById('comparisonCanvas');
+            comparisonCtx = comparisonCanvas.getContext('2d');
+            conversionCanvas = document.getElementById('conversionCanvas');
+            conversionCtx = conversionCanvas.getContext('2d');
+            
+            setupEventListeners();
+            updateParametricCanvas();
+            updateComparisonCanvas();
+            updateConversionCanvas();
+        });
+
+        function setupEventListeners() {
+            // Animation paramétrique
+            ['animSpeed', 'centerXParam', 'centerYParam', 'radiusParam'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('input', function() {
+                        updateSliderDisplay(id, this.value);
+                        if (id !== 'animSpeed') {
+                            updateParametricCanvas();
+                        }
+                    });
+                }
+            });
+
+            // Comparaison
+            document.getElementById('tParam').addEventListener('input', function() {
+                updateSliderDisplay('tParam', this.value);
+                updateComparisonCanvas();
+            });
+
+            // Conversion
+            ['paramA', 'paramB', 'paramR'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('input', function() {
+                        updateSliderDisplay(id, this.value);
+                        updateConversionCanvas();
+                    });
+                }
+            });
+        }
+
+        function updateParametricCanvas() {
+            const width = parametricCanvas.width;
+            const height = parametricCanvas.height;
+            
+            // Effacer le canvas
+            parametricCtx.fillStyle = '#f8fafc';
+            parametricCtx.fillRect(0, 0, width, height);
+            
+            // Dessiner la grille
+            drawGrid(parametricCtx, width, height);
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 50;
+            const a = parseFloat(document.getElementById('centerXParam').value);
+            const b = parseFloat(document.getElementById('centerYParam').value);
+            const R = parseFloat(document.getElementById('radiusParam').value);
+            
+            // Dessiner le cercle complet en pointillés
+            parametricCtx.setLineDash([3, 3]);
+            parametricCtx.strokeStyle = '#e2e8f0';
+            parametricCtx.lineWidth = 2;
+            parametricCtx.beginPath();
+            parametricCtx.arc(centerX + a * scale, centerY - b * scale, R * scale, 0, 2 * Math.PI);
+            parametricCtx.stroke();
+            parametricCtx.setLineDash([]);
+            
+            // Dessiner la partie tracée jusqu'à t
+            if (trail.length > 1) {
+                parametricCtx.strokeStyle = '#4ecdc4';
+                parametricCtx.lineWidth = 4;
+                parametricCtx.beginPath();
+                parametricCtx.moveTo(trail[0].x, trail[0].y);
+                for (let i = 1; i < trail.length; i++) {
+                    parametricCtx.lineTo(trail[i].x, trail[i].y);
+                }
+                parametricCtx.stroke();
+            }
+            
+            // Position actuelle
+            const x = a + R * Math.cos(t);
+            const y = b + R * Math.sin(t);
+            
+            // Dessiner le point mobile
+            parametricCtx.fillStyle = '#ff6b6b';
+            parametricCtx.beginPath();
+            parametricCtx.arc(centerX + x * scale, centerY - y * scale, 8, 0, 2 * Math.PI);
+            parametricCtx.fill();
+            
+            // Dessiner les lignes de construction
+            parametricCtx.setLineDash([3, 3]);
+            parametricCtx.strokeStyle = '#95a5a6';
+            parametricCtx.lineWidth = 2;
+            
+            // Ligne vers le centre
+            parametricCtx.beginPath();
+            parametricCtx.moveTo(centerX + a * scale, centerY - b * scale);
+            parametricCtx.lineTo(centerX + x * scale, centerY - y * scale);
+            parametricCtx.stroke();
+            
+            // Projections
+            parametricCtx.beginPath();
+            parametricCtx.moveTo(centerX + x * scale, centerY - y * scale);
+            parametricCtx.lineTo(centerX + x * scale, centerY - b * scale);
+            parametricCtx.stroke();
+            
+            parametricCtx.beginPath();
+            parametricCtx.moveTo(centerX + x * scale, centerY - y * scale);
+            parametricCtx.lineTo(centerX + a * scale, centerY - y * scale);
+            parametricCtx.stroke();
+            
+            parametricCtx.setLineDash([]);
+            
+            // Dessiner l'angle
+            parametricCtx.strokeStyle = '#feca57';
+            parametricCtx.lineWidth = 3;
+            parametricCtx.beginPath();
+            parametricCtx.arc(centerX + a * scale, centerY - b * scale, 30, 0, -t, true);
+            parametricCtx.stroke();
+            
+            // Dessiner le vecteur vitesse
+            const vx = -R * Math.sin(t);
+            const vy = R * Math.cos(t);
+            drawVector(parametricCtx, centerX + x * scale, centerY - y * scale, vx * scale * 0.3, -vy * scale * 0.3, '#e17055', 'v⃗');
+            
+            // Mettre à jour les affichages
+            updateParametricInfo(x, y, vx, vy, R);
+        }
+
+        function updateComparisonCanvas() {
+            const width = comparisonCanvas.width;
+            const height = comparisonCanvas.height;
+            
+            // Effacer le canvas
+            comparisonCtx.fillStyle = '#f8fafc';
+            comparisonCtx.fillRect(0, 0, width, height);
+            
+            // Dessiner la grille
+            drawGrid(comparisonCtx, width, height);
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 40;
+            const tValue = parseFloat(document.getElementById('tParam').value);
+            const curveType = document.getElementById('curveType').value;
+            
+            // Définir les courbes
+            const curves = {
+                circle: {
+                    x: (t) => 2 * Math.cos(t),
+                    y: (t) => 2 * Math.sin(t),
+                    color: '#4ecdc4',
+                    name: 'Cercle'
+                },
+                ellipse: {
+                    x: (t) => 3 * Math.cos(t),
+                    y: (t) => 1.5 * Math.sin(t),
+                    color: '#ff6b6b',
+                    name: 'Ellipse'
+                },
+                spiral: {
+                    x: (t) => 0.3 * t * Math.cos(t),
+                    y: (t) => 0.3 * t * Math.sin(t),
+                    color: '#feca57',
+                    name: 'Spirale'
+                }
+            };
+            
+            // Dessiner les courbes complètes
+            Object.keys(curves).forEach(key => {
+                if (curveType === 'all' || curveType === key) {
+                    const curve = curves[key];
+                    comparisonCtx.strokeStyle = curve.color;
+                    comparisonCtx.lineWidth = 2;
+                    comparisonCtx.globalAlpha = 0.3;
+                    
+                    comparisonCtx.beginPath();
+                    let maxT = key === 'spiral' ? 4 * Math.PI : 2 * Math.PI;
+                    for (let i = 0; i <= 100; i++) {
+                        const t = (i / 100) * maxT;
+                        const x = curve.x(t);
+                        const y = curve.y(t);
+                        
+                        if (i === 0) {
+                            comparisonCtx.moveTo(centerX + x * scale, centerY - y * scale);
+                        } else {
+                            comparisonCtx.lineTo(centerX + x * scale, centerY - y * scale);
+                        }
+                    }
+                    comparisonCtx.stroke();
+                    comparisonCtx.globalAlpha = 1;
+                }
+            });
+            
+            // Dessiner les points actuels
+            Object.keys(curves).forEach(key => {
+                if (curveType === 'all' || curveType === key) {
+                    const curve = curves[key];
+                    const x = curve.x(tValue);
+                    const y = curve.y(tValue);
+                    
+                    comparisonCtx.fillStyle = curve.color;
+                    comparisonCtx.beginPath();
+                    comparisonCtx.arc(centerX + x * scale, centerY - y * scale, 6, 0, 2 * Math.PI);
+                    comparisonCtx.fill();
+                    
+                    // Label
+                    comparisonCtx.fillStyle = '#2d3748';
+                    comparisonCtx.font = '10px Arial';
+                    comparisonCtx.fillText(curve.name, centerX + x * scale + 8, centerY - y * scale - 8);
+                }
+            });
+            
+            // Mettre à jour les informations
+            updateComparisonInfo(tValue, curves);
+        }
+
+        function updateConversionCanvas() {
+            const width = conversionCanvas.width;
+            const height = conversionCanvas.height;
+            
+            // Effacer le canvas
+            conversionCtx.fillStyle = '#f8fafc';
+            conversionCtx.fillRect(0, 0, width, height);
+            
+            // Dessiner la grille
+            drawGrid(conversionCtx, width, height);
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 60;
+            const a = parseFloat(document.getElementById('paramA').value);
+            const b = parseFloat(document.getElementById('paramB').value);
+            const R = parseFloat(document.getElementById('paramR').value);
+            
+            // Dessiner le cercle
+            conversionCtx.strokeStyle = '#4ecdc4';
+            conversionCtx.fillStyle = 'rgba(78, 205, 196, 0.1)';
+            conversionCtx.lineWidth = 3;
+            conversionCtx.beginPath();
+            conversionCtx.arc(centerX + a * scale, centerY - b * scale, R * scale, 0, 2 * Math.PI);
+            conversionCtx.fill();
+            conversionCtx.stroke();
+            
+            // Dessiner le centre
+            drawPoint(conversionCtx, centerX + a * scale, centerY - b * scale, `(${a}, ${b})`, '#ff6b6b');
+            
+            // Dessiner quelques points sur le cercle avec leurs coordonnées
+            const angles = [0, Math.PI/4, Math.PI/2, 3*Math.PI/4, Math.PI, 5*Math.PI/4, 3*Math.PI/2, 7*Math.PI/4];
+            angles.forEach((angle, index) => {
+                const x = a + R * Math.cos(angle);
+                const y = b + R * Math.sin(angle);
+                
+                conversionCtx.fillStyle = '#feca57';
+                conversionCtx.beginPath();
+                conversionCtx.arc(centerX + x * scale, centerY - y * scale, 4, 0, 2 * Math.PI);
+                conversionCtx.fill();
+                
+                if (index % 2 === 0) { // Afficher seulement quelques coordonnées
+                    conversionCtx.fillStyle = '#2d3748';
+                    conversionCtx.font = '10px Arial';
+                    conversionCtx.fillText(`(${x.toFixed(1)}, ${y.toFixed(1)})`, 
+                                         centerX + x * scale + 8, centerY - y * scale - 8);
+                }
+            });
+            
+            // Mettre à jour les équations
+            updateConversionInfo(a, b, R);
+        }
+
+        function drawGrid(ctx, width, height) {
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 50;
+            
+            // Lignes de grille
+            for (let i = -10; i <= 10; i++) {
+                if (i !== 0) {
+                    // Lignes verticales
+                    ctx.beginPath();
+                    ctx.moveTo(centerX + i * scale, 0);
+                    ctx.lineTo(centerX + i * scale, height);
+                    ctx.stroke();
+                    
+                    // Lignes horizontales
+                    ctx.beginPath();
+                    ctx.moveTo(0, centerY + i * scale);
+                    ctx.lineTo(width, centerY + i * scale);
+                    ctx.stroke();
+                }
+            }
+            
+            // Axes principaux
+            ctx.strokeStyle = '#2d3748';
+            ctx.lineWidth = 2;
+            
+            // Axe X
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(width, centerY);
+            ctx.stroke();
+            
+            // Axe Y
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, height);
+            ctx.stroke();
+        }
+
+        function drawVector(ctx, startX, startY, dx, dy, color, label) {
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 3;
+            
+            // Ligne du vecteur
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(startX + dx, startY + dy);
+            ctx.stroke();
+            
+            // Flèche
+            const angle = Math.atan2(dy, dx);
+            const arrowLength = 8;
+            const arrowAngle = Math.PI / 6;
+            
+            ctx.beginPath();
+            ctx.moveTo(startX + dx, startY + dy);
+            ctx.lineTo(
+                startX + dx - arrowLength * Math.cos(angle - arrowAngle),
+                startY + dy - arrowLength * Math.sin(angle - arrowAngle)
+            );
+            ctx.moveTo(startX + dx, startY + dy);
+            ctx.lineTo(
+                startX + dx - arrowLength * Math.cos(angle + arrowAngle),
+                startY + dy - arrowLength * Math.sin(angle + arrowAngle)
+            );
+            ctx.stroke();
+            
+            // Label
+            ctx.fillStyle = color;
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText(label, startX + dx + 5, startY + dy - 5);
+        }
+
+        function drawPoint(ctx, x, y, label, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(x, y, 5, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.fillStyle = '#2d3748';
+            ctx.font = 'bold 10px Arial';
+            ctx.fillText(label, x + 8, y - 8);
+        }
+
+        function updateSliderDisplay(id, value) {
+            const display = document.getElementById(id + 'Value');
+            if (display) {
+                display.textContent = parseFloat(value).toFixed(id === 'tParam' ? 1 : 2);
+            }
+        }
+
+        function updateParametricInfo(x, y, vx, vy, R) {
+            document.getElementById('currentT').textContent = t.toFixed(2);
+            document.getElementById('currentX').textContent = x.toFixed(2);
+            document.getElementById('currentY').textContent = y.toFixed(2);
+            document.getElementById('currentCos').textContent = Math.cos(t).toFixed(2);
+            document.getElementById('currentSin').textContent = Math.sin(t).toFixed(2);
+            document.getElementById('velocityX').textContent = vx.toFixed(2);
+            document.getElementById('velocityY').textContent = vy.toFixed(2);
+            document.getElementById('velocityMagnitude').textContent = R.toFixed(2);
+        }
+
+        function updateComparisonInfo(tValue, curves) {
+            document.getElementById('currentTComparison').textContent = tValue.toFixed(2);
+            
+            const circleX = curves.circle.x(tValue);
+            const circleY = curves.circle.y(tValue);
+            document.getElementById('circlePos').textContent = `${circleX.toFixed(2)}, ${circleY.toFixed(2)}`;
+            
+            const ellipseX = curves.ellipse.x(tValue);
+            const ellipseY = curves.ellipse.y(tValue);
+            document.getElementById('ellipsePos').textContent = `${ellipseX.toFixed(2)}, ${ellipseY.toFixed(2)}`;
+            
+            const spiralX = curves.spiral.x(tValue);
+            const spiralY = curves.spiral.y(tValue);
+            document.getElementById('spiralPos').textContent = `${spiralX.toFixed(2)}, ${spiralY.toFixed(2)}`;
+        }
+
+        function updateConversionInfo(a, b, R) {
+            document.getElementById('paramXEquation').textContent = `${a} + ${R}×cos(t)`;
+            document.getElementById('paramYEquation').textContent = `${b} + ${R}×sin(t)`;
+            
+            let cartesian = '';
+            if (a !== 0 || b !== 0) {
+                cartesian = `(x - ${a})² + (y - ${b})² = ${(R*R).toFixed(2)}`;
+            } else {
+                cartesian = `x² + y² = ${(R*R).toFixed(2)}`;
+            }
+            document.getElementById('cartesianEquation').textContent = cartesian;
+        }
+
+        function toggleAnimation() {
+            if (animationRunning) {
+                stopAnimation();
+            } else {
+                startAnimation();
+            }
+        }
+
+        function startAnimation() {
+            animationRunning = true;
+            document.getElementById('playPauseBtn').textContent = '⏸️ Pause';
+            document.getElementById('playPauseBtn').className = 'btn pause';
+            animate();
+        }
+
+        function stopAnimation() {
+            animationRunning = false;
+            document.getElementById('playPauseBtn').textContent = '▶️ Play';
+            document.getElementById('playPauseBtn').className = 'btn play';
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        }
+
+        function resetAnimation() {
+            stopAnimation();
+            t = 0;
+            trail = [];
+            updateParametricCanvas();
+        }
+
+        function stepAnimation() {
+            const speed = parseFloat(document.getElementById('animSpeed').value);
+            t += speed * 5; // Plus gros pas pour le step
+            
+            if (t > 2 * Math.PI) {
+                t = 0;
+                trail = [];
+            }
+            
+            addToTrail();
+            updateParametricCanvas();
+        }
+
+        function animate() {
+            if (!animationRunning) return;
+            
+            const speed = parseFloat(document.getElementById('animSpeed').value);
+            t += speed;
+            
+            if (t > 2 * Math.PI) {
+                t = 0;
+                trail = [];
+            }
+            
+            addToTrail();
+            updateParametricCanvas();
+            animationId = requestAnimationFrame(animate);
+        }
+
+        function addToTrail() {
+            const width = parametricCanvas.width;
+            const height = parametricCanvas.height;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 50;
+            const a = parseFloat(document.getElementById('centerXParam').value);
+            const b = parseFloat(document.getElementById('centerYParam').value);
+            const R = parseFloat(document.getElementById('radiusParam').value);
+            
+            const x = a + R * Math.cos(t);
+            const y = b + R * Math.sin(t);
+            
+            trail.push({
+                x: centerX + x * scale,
+                y: centerY - y * scale
+            });
+            
+            // Limiter la taille du trail
+            if (trail.length > 200) {
+                trail.shift();
+            }
+        }
+
+        function animateComparison() {
+            comparisonAnimationRunning = !comparisonAnimationRunning;
+            
+            if (comparisonAnimationRunning) {
+                animateComparisonLoop();
+            }
+        }
+
+        function animateComparisonLoop() {
+            if (!comparisonAnimationRunning) return;
+            
+            const tSlider = document.getElementById('tParam');
+            let currentT = parseFloat(tSlider.value);
+            currentT += 0.1;
+            
+            if (currentT > 12.56) {
+                currentT = 0;
+            }
+            
+            tSlider.value = currentT;
+            updateSliderDisplay('tParam', currentT);
+            updateComparisonCanvas();
+            
+            setTimeout(() => animateComparisonLoop(), 50);
+        }
+
+        function showConversionSteps() {
+            const stepsDiv = document.getElementById('conversionSteps');
+            stepsDiv.style.display = stepsDiv.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angles et Trigonométrie - Cours Interactif</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn.home {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section h1 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-align: center;
+        }
+
+        .canvas-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .canvas-wrapper {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .canvas-wrapper:hover {
+            transform: scale(1.02);
+        }
+
+        canvas {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+
+        .controls {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .value-display {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 5px;
+            font-weight: bold;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #e17055;
+            font-size: 1.2em;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .info-panel {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #6c5ce7;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .canvas-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📐 Angles et Trigonométrie</h1>
+            <p>Explorez les relations entre produit scalaire et angles</p>
+        </div>
+
+        <div class="navigation">
+            <a href="index.html" class="nav-btn home">🏠 Accueil</a>
+            <a href="vecteurs.html" class="nav-btn">🔢 Vecteurs</a>
+            <a href="droites.html" class="nav-btn">📏 Droites</a>
+            <a href="cercles.html" class="nav-btn">⭕ Cercles</a>
+            <a href="parametrique.html" class="nav-btn">🔄 Paramétrique</a>
+            <a href="intersections.html" class="nav-btn">🎯 Intersections</a>
+        </div>
+
+        <div class="section">
+            <h1>Repérage Polaire d'un Vecteur</h1>
+            
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <h3>Coordonnées Polaires Interactives</h3>
+                    <canvas id="polarCanvas" width="400" height="400"></canvas>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>Angle θ (radians):</label>
+                            <input type="range" id="theta" min="0" max="6.28" value="1.57" step="0.1">
+                            <span class="value-display" id="thetaValue">π/2</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Norme du vecteur:</label>
+                            <input type="range" id="magnitude" min="0.5" max="3" value="2" step="0.1">
+                            <span class="value-display" id="magnitudeValue">2.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🧮 Coordonnées et Fonctions</h3>
+                    <div class="formula-box">
+                        <p><strong>Coordonnées cartésiennes:</strong></p>
+                        <p>x = r × cos(θ) = <span id="polarX">0.0</span></p>
+                        <p>y = r × sin(θ) = <span id="polarY">2.0</span></p>
+                    </div>
+                    <div class="info-panel">
+                        <p><strong>Valeurs trigonométriques:</strong></p>
+                        <p>cos(θ) = <span id="cosValue">0.0</span></p>
+                        <p>sin(θ) = <span id="sinValue">1.0</span></p>
+                        <p>tan(θ) = <span id="tanValue">∞</span></p>
+                    </div>
+                    <div class="formula-box">
+                        <p><strong>Formule fondamentale:</strong></p>
+                        <p>cos²(θ) + sin²(θ) = <span id="fundamental">1.000</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h1>Calcul d'Aire de Triangle</h1>
+            
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <h3>Triangle Dynamique</h3>
+                    <canvas id="triangleCanvas" width="500" height="400"></canvas>
+                    <div class="controls">
+                        <button class="btn" onclick="randomizeTriangle()">🎲 Triangle Aléatoire</button>
+                        <div class="formula-box">
+                            <p><strong>Aire = ½|det(AB⃗, AC⃗)|</strong></p>
+                            <p>Aire = <span id="triangleArea">0</span></p>
+                            <p>Déterminant = <span id="determinant">0</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📊 Calcul de l'Angle</h3>
+                    <div class="formula-box">
+                        <p><strong>cos(AB⃗, AC⃗) = </strong><span id="triangleCos">0.00</span></p>
+                        <p><strong>Angle BAC = </strong><span id="triangleAngle">0.0</span>°</p>
+                    </div>
+                    <div class="info-panel">
+                        <p><strong>Coordonnées des sommets:</strong></p>
+                        <p>A(<span id="pointA">0, 0</span>)</p>
+                        <p>B(<span id="pointB">0, 0</span>)</p>
+                        <p>C(<span id="pointC">0, 0</span>)</p>
+                    </div>
+                    <div class="formula-box">
+                        <p><strong>Longueurs des côtés:</strong></p>
+                        <p>AB = <span id="lengthAB">0.0</span></p>
+                        <p>AC = <span id="lengthAC">0.0</span></p>
+                        <p>BC = <span id="lengthBC">0.0</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <h3>📚 Concepts clés - Angles et Trigonométrie</h3>
+            <p><strong>Repérage polaire :</strong> Un vecteur de norme r et d'angle θ a pour coordonnées (r cos θ, r sin θ)</p>
+            <p><strong>Angle entre vecteurs :</strong> cos(u⃗, v⃗) = (u⃗ · v⃗) / (||u⃗|| × ||v⃗||)</p>
+            <p><strong>Aire d'un triangle :</strong> S = ½|det(AB⃗, AC⃗)| où det(AB⃗, AC⃗) = xAB × yAC - yAB × xAC</p>
+            <p><strong>Relations trigonométriques :</strong> cos²θ + sin²θ = 1, tan θ = sin θ / cos θ</p>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let polarCanvas, polarCtx;
+        let triangleCanvas, triangleCtx;
+        let trianglePoints = {A: {x: 100, y: 300}, B: {x: 400, y: 100}, C: {x: 350, y: 350}};
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            polarCanvas = document.getElementById('polarCanvas');
+            polarCtx = polarCanvas.getContext('2d');
+            triangleCanvas = document.getElementById('triangleCanvas');
+            triangleCtx = triangleCanvas.getContext('2d');
+            
+            setupEventListeners();
+            updatePolarCanvas();
+            updateTriangleCanvas();
+        });
+
+        function setupEventListeners() {
+            ['theta', 'magnitude'].forEach(id => {
+                const slider = document.getElementById(id);
+                if (slider) {
+                    slider.addEventListener('input', updatePolarCanvas);
+                }
+            });
+        }
+
+        function updatePolarCanvas() {
+            const width = polarCanvas.width;
+            const height = polarCanvas.height;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            
+            // Effacer le canvas
+            polarCtx.fillStyle = '#f8fafc';
+            polarCtx.fillRect(0, 0, width, height);
+            
+            // Obtenir les valeurs
+            const theta = parseFloat(document.getElementById('theta').value);
+            const magnitude = parseFloat(document.getElementById('magnitude').value);
+            
+            // Dessiner les cercles de référence
+            polarCtx.strokeStyle = '#e2e8f0';
+            polarCtx.lineWidth = 1;
+            for (let r = 50; r <= 150; r += 50) {
+                polarCtx.beginPath();
+                polarCtx.arc(centerX, centerY, r, 0, 2 * Math.PI);
+                polarCtx.stroke();
+            }
+            
+            // Dessiner les axes
+            polarCtx.strokeStyle = '#cbd5e0';
+            polarCtx.lineWidth = 1;
+            for (let i = 0; i < 8; i++) {
+                const angle = (i * Math.PI) / 4;
+                const x1 = centerX + 20 * Math.cos(angle);
+                const y1 = centerY + 20 * Math.sin(angle);
+                const x2 = centerX + 160 * Math.cos(angle);
+                const y2 = centerY + 160 * Math.sin(angle);
+                
+                polarCtx.beginPath();
+                polarCtx.moveTo(x1, y1);
+                polarCtx.lineTo(x2, y2);
+                polarCtx.stroke();
+            }
+            
+            // Calculer les coordonnées
+            const x = magnitude * Math.cos(theta);
+            const y = magnitude * Math.sin(theta);
+            const scale = 50;
+            
+            // Dessiner le vecteur
+            drawVector(polarCtx, centerX, centerY, x * scale, -y * scale, '#ff6b6b', 'r⃗');
+            
+            // Dessiner l'arc d'angle
+            polarCtx.strokeStyle = '#feca57';
+            polarCtx.lineWidth = 3;
+            polarCtx.beginPath();
+            polarCtx.arc(centerX, centerY, 40, 0, -theta, theta < 0);
+            polarCtx.stroke();
+            
+            // Dessiner les projections
+            polarCtx.setLineDash([3, 3]);
+            polarCtx.strokeStyle = '#95a5a6';
+            polarCtx.lineWidth = 2;
+            
+            // Projection sur x
+            polarCtx.beginPath();
+            polarCtx.moveTo(centerX + x * scale, centerY - y * scale);
+            polarCtx.lineTo(centerX + x * scale, centerY);
+            polarCtx.stroke();
+            
+            // Projection sur y
+            polarCtx.beginPath();
+            polarCtx.moveTo(centerX + x * scale, centerY - y * scale);
+            polarCtx.lineTo(centerX, centerY - y * scale);
+            polarCtx.stroke();
+            
+            polarCtx.setLineDash([]);
+            
+            // Mettre à jour les affichages
+            document.getElementById('thetaValue').textContent = (theta / Math.PI).toFixed(2) + 'π';
+            document.getElementById('magnitudeValue').textContent = magnitude.toFixed(1);
+            document.getElementById('polarX').textContent = x.toFixed(2);
+            document.getElementById('polarY').textContent = y.toFixed(2);
+            document.getElementById('cosValue').textContent = Math.cos(theta).toFixed(3);
+            document.getElementById('sinValue').textContent = Math.sin(theta).toFixed(3);
+            
+            const tanValue = Math.abs(Math.cos(theta)) < 0.001 ? '∞' : (Math.tan(theta)).toFixed(3);
+            document.getElementById('tanValue').textContent = tanValue;
+            
+            const fundamental = Math.cos(theta) * Math.cos(theta) + Math.sin(theta) * Math.sin(theta);
+            document.getElementById('fundamental').textContent = fundamental.toFixed(3);
+        }
+
+        function updateTriangleCanvas() {
+            const width = triangleCanvas.width;
+            const height = triangleCanvas.height;
+            
+            // Effacer le canvas
+            triangleCtx.fillStyle = '#f8fafc';
+            triangleCtx.fillRect(0, 0, width, height);
+            
+            const A = trianglePoints.A;
+            const B = trianglePoints.B;
+            const C = trianglePoints.C;
+            
+            // Dessiner le triangle
+            triangleCtx.strokeStyle = '#2d3748';
+            triangleCtx.fillStyle = 'rgba(78, 205, 196, 0.3)';
+            triangleCtx.lineWidth = 2;
+            
+            triangleCtx.beginPath();
+            triangleCtx.moveTo(A.x, A.y);
+            triangleCtx.lineTo(B.x, B.y);
+            triangleCtx.lineTo(C.x, C.y);
+            triangleCtx.closePath();
+            triangleCtx.fill();
+            triangleCtx.stroke();
+            
+            // Dessiner les points
+            drawPoint(triangleCtx, A.x, A.y, 'A', '#ff6b6b');
+            drawPoint(triangleCtx, B.x, B.y, 'B', '#4ecdc4');
+            drawPoint(triangleCtx, C.x, C.y, 'C', '#feca57');
+            
+            // Dessiner les vecteurs AB et AC
+            drawVector(triangleCtx, A.x, A.y, B.x - A.x, B.y - A.y, '#ff6b6b', '');
+            drawVector(triangleCtx, A.x, A.y, C.x - A.x, C.y - A.y, '#4ecdc4', '');
+            
+            // Calculer l'aire et autres valeurs
+            const ABx = B.x - A.x;
+            const ABy = B.y - A.y;
+            const ACx = C.x - A.x;
+            const ACy = C.y - A.y;
+            
+            const determinant = ABx * ACy - ABy * ACx;
+            const area = Math.abs(determinant) / 2;
+            
+            // Calcul de l'angle
+            const dotProduct = ABx * ACx + ABy * ACy;
+            const normAB = Math.sqrt(ABx * ABx + ABy * ABy);
+            const normAC = Math.sqrt(ACx * ACx + ACy * ACy);
+            const cosAngle = dotProduct / (normAB * normAC);
+            const angleRadians = Math.acos(Math.max(-1, Math.min(1, cosAngle)));
+            const angleDegrees = angleRadians * 180 / Math.PI;
+            
+            // Longueurs des côtés
+            const lengthAB = normAB;
+            const lengthAC = normAC;
+            const lengthBC = Math.sqrt((C.x - B.x) * (C.x - B.x) + (C.y - B.y) * (C.y - B.y));
+            
+            // Mettre à jour les affichages
+            document.getElementById('triangleArea').textContent = area.toFixed(1);
+            document.getElementById('determinant').textContent = determinant.toFixed(1);
+            document.getElementById('triangleCos').textContent = cosAngle.toFixed(3);
+            document.getElementById('triangleAngle').textContent = angleDegrees.toFixed(1);
+            
+            // Coordonnées (converties en coordonnées mathématiques pour l'affichage)
+            document.getElementById('pointA').textContent = `${((A.x - 250)/50).toFixed(1)}, ${((300 - A.y)/50).toFixed(1)}`;
+            document.getElementById('pointB').textContent = `${((B.x - 250)/50).toFixed(1)}, ${((300 - B.y)/50).toFixed(1)}`;
+            document.getElementById('pointC').textContent = `${((C.x - 250)/50).toFixed(1)}, ${((300 - C.y)/50).toFixed(1)}`;
+            
+            document.getElementById('lengthAB').textContent = (lengthAB / 50).toFixed(2);
+            document.getElementById('lengthAC').textContent = (lengthAC / 50).toFixed(2);
+            document.getElementById('lengthBC').textContent = (lengthBC / 50).toFixed(2);
+        }
+
+        function drawVector(ctx, startX, startY, dx, dy, color, label) {
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 3;
+            
+            // Ligne du vecteur
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(startX + dx, startY + dy);
+            ctx.stroke();
+            
+            // Flèche
+            const angle = Math.atan2(dy, dx);
+            const arrowLength = 10;
+            const arrowAngle = Math.PI / 6;
+            
+            ctx.beginPath();
+            ctx.moveTo(startX + dx, startY + dy);
+            ctx.lineTo(
+                startX + dx - arrowLength * Math.cos(angle - arrowAngle),
+                startY + dy - arrowLength * Math.sin(angle - arrowAngle)
+            );
+            ctx.moveTo(startX + dx, startY + dy);
+            ctx.lineTo(
+                startX + dx - arrowLength * Math.cos(angle + arrowAngle),
+                startY + dy - arrowLength * Math.sin(angle + arrowAngle)
+            );
+            ctx.stroke();
+            
+            // Label
+            if (label) {
+                ctx.fillStyle = color;
+                ctx.font = 'bold 16px Arial';
+                ctx.fillText(label, startX + dx + 10, startY + dy - 10);
+            }
+        }
+
+        function drawPoint(ctx, x, y, label, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(x, y, 6, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.fillStyle = '#2d3748';
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText(label, x + 10, y - 10);
+        }
+
+        function randomizeTriangle() {
+            trianglePoints.A = {x: 50 + Math.random() * 400, y: 50 + Math.random() * 300};
+            trianglePoints.B = {x: 50 + Math.random() * 400, y: 50 + Math.random() * 300};
+            trianglePoints.C = {x: 50 + Math.random() * 400, y: 50 + Math.random() * 300};
+            updateTriangleCanvas();
+        }
+    </script>
+</body>
+</html>

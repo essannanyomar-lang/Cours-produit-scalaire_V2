@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours Interactif : Étude Analytique du Produit Scalaire</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: #4a5568;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .course-info {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            display: inline-block;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .chapter-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .chapter-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .chapter-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .chapter-description {
+            color: #666;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .chapter-topics {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .chapter-topics ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .chapter-topics li {
+            padding: 5px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .chapter-topics li:last-child {
+            border-bottom: none;
+        }
+
+        .chapter-topics li:before {
+            content: "▶ ";
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+
+        .access-btn {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .access-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .instructions h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        .instruction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .instruction-card {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 5px solid #6c5ce7;
+        }
+
+        .instruction-card h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .chapters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .instruction-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📐 Étude Analytique du Produit Scalaire</h1>
+            <p>Cours Interactif avec Visualisations Dynamiques</p>
+            <div class="course-info">
+                Niveau : 1ère Bac Sciences Mathématiques | Lycée Alqudss - Tantan
+            </div>
+        </div>
+
+        <div class="chapters-grid">
+            <a href="vecteurs.html" class="chapter-card">
+                <div class="chapter-icon">🔢</div>
+                <div class="chapter-title">Vecteurs et Produit Scalaire</div>
+                <div class="chapter-description">
+                    Découvrez les bases du calcul vectoriel et du produit scalaire
+                </div>
+                <div class="chapter-topics">
+                    <ul>
+                        <li>Expression analytique du produit scalaire</li>
+                        <li>Calcul de normes de vecteurs</li>
+                        <li>Inégalité de Cauchy-Schwarz</li>
+                        <li>Inégalité triangulaire</li>
+                    </ul>
+                </div>
+                <div class="access-btn">Accéder aux animations</div>
+            </a>
+
+            <a href="angles.html" class="chapter-card">
+                <div class="chapter-icon">📐</div>
+                <div class="chapter-title">Angles et Trigonométrie</div>
+                <div class="chapter-description">
+                    Explorez les relations entre produit scalaire et angles
+                </div>
+                <div class="chapter-topics">
+                    <ul>
+                        <li>Repérage polaire d'un vecteur</li>
+                        <li>Calcul de cos(u⃗;v⃗) et sin(u⃗;v⃗)</li>
+                        <li>Aire d'un triangle</li>
+                        <li>Applications trigonométriques</li>
+                    </ul>
+                </div>
+                <div class="access-btn">Accéder aux animations</div>
+            </a>
+
+            <a href="droites.html" class="chapter-card">
+                <div class="chapter-icon">📏</div>
+                <div class="chapter-title">Droites dans le Plan</div>
+                <div class="chapter-description">
+                    Maîtrisez l'étude analytique des droites
+                </div>
+                <div class="chapter-topics">
+                    <ul>
+                        <li>Vecteur normal à une droite</li>
+                        <li>Équations cartésiennes</li>
+                        <li>Condition de perpendicularité</li>
+                        <li>Distance point-droite</li>
+                    </ul>
+                </div>
+                <div class="access-btn">Accéder aux animations</div>
+            </a>
+
+            <a href="cercles.html" class="chapter-card">
+                <div class="chapter-icon">⭕</div>
+                <div class="chapter-title">Cercles</div>
+                <div class="chapter-description">
+                    Explorez les équations et propriétés des cercles
+                </div>
+                <div class="chapter-topics">
+                    <ul>
+                        <li>Équations cartésiennes de cercles</li>
+                        <li>Cercle défini par trois points</li>
+                        <li>Intérieur et extérieur d'un cercle</li>
+                        <li>Ensemble de points M(x;y)</li>
+                    </ul>
+                </div>
+                <div class="access-btn">Accéder aux animations</div>
+            </a>
+
+            <a href="parametrique.html" class="chapter-card">
+                <div class="chapter-icon">🔄</div>
+                <div class="chapter-title">Représentation Paramétrique</div>
+                <div class="chapter-description">
+                    Visualisez les courbes paramétriques
+                </div>
+                <div class="chapter-topics">
+                    <ul>
+                        <li>Équations paramétriques de cercles</li>
+                        <li>Animation du parcours paramétrique</li>
+                        <li>Relations x(t) et y(t)</li>
+                        <li>Applications aux mouvements</li>
+                    </ul>
+                </div>
+                <div class="access-btn">Accéder aux animations</div>
+            </a>
+
+            <a href="intersections.html" class="chapter-card">
+                <div class="chapter-icon">🎯</div>
+                <div class="chapter-title">Intersections et Tangentes</div>
+                <div class="chapter-description">
+                    Analysez les intersections et construisez des tangentes
+                </div>
+                <div class="chapter-topics">
+                    <ul>
+                        <li>Intersection droite-cercle</li>
+                        <li>Tangentes à un cercle</li>
+                        <li>Positions relatives</li>
+                        <li>Constructions géométriques</li>
+                    </ul>
+                </div>
+                <div class="access-btn">Accéder aux animations</div>
+            </a>
+        </div>
+
+        <div class="instructions">
+            <h2>Guide d'utilisation</h2>
+            <div class="instruction-grid">
+                <div class="instruction-card">
+                    <h3>🎯 Navigation</h3>
+                    <p>Cliquez sur chaque chapitre pour accéder aux animations spécifiques. Utilisez les boutons de navigation pour passer d'un chapitre à l'autre.</p>
+                </div>
+                <div class="instruction-card">
+                    <h3>🔧 Interactivité</h3>
+                    <p>Manipulez les paramètres avec les curseurs, cliquez sur les éléments graphiques et observez les changements en temps réel.</p>
+                </div>
+                <div class="instruction-card">
+                    <h3>📱 Compatibilité</h3>
+                    <p>Fonctionne sur ordinateur, tablette et smartphone. Recommandé : navigateur moderne avec JavaScript activé.</p>
+                </div>
+                <div class="instruction-card">
+                    <h3>📚 Pédagogie</h3>
+                    <p>Consultez d'abord la théorie dans votre cours, puis explorez les animations pour approfondir votre compréhension.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Cours Interactif : Étude Analytique du Produit Scalaire</strong></p>
+            <p>Conçu pour les étudiants de 1ère Bac Sciences Mathématiques</p>
+            <p>Lycée Alqudss - Tantan | Prof. Essannany Omar</p>
+        </div>
+    </div>
+</body>
+</html>

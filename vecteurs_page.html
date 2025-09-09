@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vecteurs et Produit Scalaire - Cours Interactif</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn.home {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section h1 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-align: center;
+        }
+
+        .canvas-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .canvas-wrapper {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .canvas-wrapper:hover {
+            transform: scale(1.02);
+        }
+
+        canvas {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+
+        .controls {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .value-display {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 5px;
+            font-weight: bold;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #e17055;
+            font-size: 1.2em;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .info-panel {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #6c5ce7;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        @media (max-width: 768px) {
+            .canvas-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔢 Vecteurs et Produit Scalaire</h1>
+            <p>Explorez les concepts vectoriels à travers des visualisations interactives</p>
+        </div>
+
+        <div class="navigation">
+            <a href="index.html" class="nav-btn home">🏠 Accueil</a>
+            <a href="angles.html" class="nav-btn">📐 Angles</a>
+            <a href="droites.html" class="nav-btn">📏 Droites</a>
+            <a href="cercles.html" class="nav-btn">⭕ Cercles</a>
+            <a href="parametrique.html" class="nav-btn">🔄 Paramétrique</a>
+            <a href="intersections.html" class="nav-btn">🎯 Intersections</a>
+        </div>
+
+        <div class="section">
+            <h1>Visualisation Interactive des Vecteurs</h1>
+            
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <h3>Manipulation des Vecteurs</h3>
+                    <canvas id="vectorCanvas" width="500" height="400"></canvas>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>Vecteur u - Composante x:</label>
+                            <input type="range" id="ux" min="-5" max="5" value="3" step="0.1">
+                            <span class="value-display" id="uxValue">3.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Vecteur u - Composante y:</label>
+                            <input type="range" id="uy" min="-5" max="5" value="2" step="0.1">
+                            <span class="value-display" id="uyValue">2.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Vecteur v - Composante x:</label>
+                            <input type="range" id="vx" min="-5" max="5" value="1" step="0.1">
+                            <span class="value-display" id="vxValue">1.0</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Vecteur v - Composante y:</label>
+                            <input type="range" id="vy" min="-5" max="5" value="4" step="0.1">
+                            <span class="value-display" id="vyValue">4.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📊 Calculs en Temps Réel</h3>
+                    <div class="formula-box">
+                        <strong>Produit Scalaire:</strong><br>
+                        u⃗ · v⃗ = <span id="scalarProduct">11.0</span>
+                    </div>
+                    <div class="info-panel">
+                        <p><strong>Normes:</strong></p>
+                        <p>||u⃗|| = <span id="normU">3.6</span></p>
+                        <p>||v⃗|| = <span id="normV">4.1</span></p>
+                        <p><strong>Angle entre les vecteurs:</strong></p>
+                        <p>θ = <span id="angleDegrees">42.5</span>°</p>
+                        <p><strong>Perpendiculaires?</strong> <span id="perpendicular">Non</span></p>
+                    </div>
+                    <div class="formula-box">
+                        <p><strong>Formule:</strong> u⃗ · v⃗ = ux × vx + uy × vy</p>
+                        <p><strong>Inégalité de Cauchy-Schwarz:</strong><br>|u⃗ · v⃗| ≤ ||u⃗|| × ||v⃗||</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <h3>📚 Concepts clés</h3>
+                <p><strong>Expression analytique :</strong> Pour deux vecteurs u⃗(x, y) et v⃗(x', y'), le produit scalaire est u⃗ · v⃗ = xx' + yy'</p>
+                <p><strong>Norme d'un vecteur :</strong> ||u⃗|| = √(x² + y²)</p>
+                <p><strong>Perpendicularité :</strong> Deux vecteurs sont perpendiculaires si et seulement si leur produit scalaire est nul</p>
+                <p><strong>Angle entre vecteurs :</strong> cos(θ) = (u⃗ · v⃗) / (||u⃗|| × ||v⃗||)</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let canvas, ctx;
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            canvas = document.getElementById('vectorCanvas');
+            ctx = canvas.getContext('2d');
+            
+            setupEventListeners();
+            updateVectorCanvas();
+        });
+
+        function setupEventListeners() {
+            ['ux', 'uy', 'vx', 'vy'].forEach(id => {
+                const slider = document.getElementById(id);
+                if (slider) {
+                    slider.addEventListener('input', updateVectorCanvas);
+                }
+            });
+        }
+
+        function updateVectorCanvas() {
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Effacer le canvas
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(0, 0, width, height);
+            
+            // Dessiner la grille
+            drawGrid(ctx, width, height);
+            
+            // Obtenir les valeurs des sliders
+            const ux = parseFloat(document.getElementById('ux').value);
+            const uy = parseFloat(document.getElementById('uy').value);
+            const vx = parseFloat(document.getElementById('vx').value);
+            const vy = parseFloat(document.getElementById('vy').value);
+            
+            // Mettre à jour les affichages
+            updateSliderDisplay('ux', ux);
+            updateSliderDisplay('uy', uy);
+            updateSliderDisplay('vx', vx);
+            updateSliderDisplay('vy', vy);
+            
+            // Convertir les coordonnées
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 30;
+            
+            // Dessiner les vecteurs
+            drawVector(ctx, centerX, centerY, ux * scale, -uy * scale, '#ff6b6b', 'u⃗');
+            drawVector(ctx, centerX, centerY, vx * scale, -vy * scale, '#4ecdc4', 'v⃗');
+            
+            // Dessiner la projection
+            const dotProduct = ux * vx + uy * vy;
+            const normV = Math.sqrt(vx * vx + vy * vy);
+            if (normV > 0) {
+                const projLength = dotProduct / normV;
+                const projX = (projLength * vx / normV) * scale;
+                const projY = -(projLength * vy / normV) * scale;
+                
+                ctx.setLineDash([5, 5]);
+                ctx.strokeStyle = '#95a5a6';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(centerX + ux * scale, centerY - uy * scale);
+                ctx.lineTo(centerX + projX, centerY + projY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+            
+            // Calculer et afficher les résultats
+            const normU = Math.sqrt(ux * ux + uy * vy);
+            const normVCalc = Math.sqrt(vx * vx + vy * vy);
+            const angle = Math.acos(Math.max(-1, Math.min(1, dotProduct / (normU * normVCalc))));
+            const angleDegrees = angle * 180 / Math.PI;
+            
+            document.getElementById('scalarProduct').textContent = dotProduct.toFixed(2);
+            document.getElementById('normU').textContent = normU.toFixed(2);
+            document.getElementById('normV').textContent = normVCalc.toFixed(2);
+            document.getElementById('angleDegrees').textContent = angleDegrees.toFixed(1);
+            document.getElementById('perpendicular').textContent = Math.abs(dotProduct) < 0.01 ? 'Oui' : 'Non';
+        }
+
+        function drawGrid(ctx, width, height) {
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+            
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 30;
+            
+            // Lignes de grille
+            for (let i = -10; i <= 10; i++) {
+                if (i !== 0) {
+                    // Lignes verticales
+                    ctx.beginPath();
+                    ctx.moveTo(centerX + i * scale, 0);
+                    ctx.lineTo(centerX + i * scale, height);
+                    ctx.stroke();
+                    
+                    // Lignes horizontales
+                    ctx.beginPath();
+                    ctx.moveTo(0, centerY + i * scale);
+                    ctx.lineTo(width, centerY + i * scale);
+                    ctx.stroke();
+                }
+            }
+            
+            // Axes principaux
+            ctx.strokeStyle = '#2d3748';
+            ctx.lineWidth = 2;
+            
+            // Axe X
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(width, centerY);
+            ctx.stroke();
+            
+            // Axe Y
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, height);
+            ctx.stroke();
+            
+            // Flèches
+            drawArrow(ctx, width - 10, centerY, 0);
+            drawArrow(ctx, centerX, 10, Math.PI / 2);
+            
+            // Labels
+            ctx.fillStyle = '#2d3748';
+            ctx.font = '14px Arial';
+            ctx.fillText('x', width - 25, centerY + 20);
+            ctx.fillText('y', centerX + 10, 25);
+        }
+
+        function drawVector(ctx, startX, startY, dx, dy, color, label) {
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 3;
+            
+            // Ligne du vecteur
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(startX + dx, startY + dy);
+            ctx.stroke();
+            
+            // Flèche
+            const angle = Math.atan2(dy, dx);
+            const arrowLength = 10;
+            const arrowAngle = Math.PI / 6;
+            
+            ctx.beginPath();
+            ctx.moveTo(startX + dx, startY + dy);
+            ctx.lineTo(
+                startX + dx - arrowLength * Math.cos(angle - arrowAngle),
+                startY + dy - arrowLength * Math.sin(angle - arrowAngle)
+            );
+            ctx.moveTo(startX + dx, startY + dy);
+            ctx.lineTo(
+                startX + dx - arrowLength * Math.cos(angle + arrowAngle),
+                startY + dy - arrowLength * Math.sin(angle + arrowAngle)
+            );
+            ctx.stroke();
+            
+            // Label
+            ctx.fillStyle = color;
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText(label, startX + dx + 10, startY + dy - 10);
+        }
+
+        function drawArrow(ctx, x, y, angle) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+            
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(-10, -5);
+            ctx.lineTo(-10, 5);
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.restore();
+        }
+
+        function updateSliderDisplay(id, value) {
+            const display = document.getElementById(id + 'Value');
+            if (display) {
+                display.textContent = value.toFixed(1);
+            }
+        }
+    </script>
+</body>
+</html>
